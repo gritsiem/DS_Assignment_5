@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package customers;
+
+service Customers{
+
+rpc GetRowsByColumn(SelectOneMessage) returns (generalResponse){}
+rpc GetRowByMultiColumns(SelectManyMessage) returns (generalResponse){}
+rpc InsertSeller(InsertMessage) returns (generalResponse){}
+rpc UpdateRowByColumn(UpdateMessage) returns (generalResponse){}
+
+rpc CreateAccount(CreateAccountMessage) returns (generalResponse){}
+rpc Login(LoginMessage) returns (generalResponse){}
+rpc SearchProduct(SearchProductMessage) returns (generalResponse){}
+rpc AddToCart(AddToCartMessage) returns (generalResponse){}
+rpc RemoveFromCart(RemoveFromCartMessage) returns (generalResponse){}
+rpc ClearCart(ClearCartMessage) returns (generalResponse){}
+rpc DisplayCart(DisplayCartMessage) returns (generalResponse){}
+rpc MakePurchase(MakePurchaseMessage) returns (generalResponse){}
+rpc PurchaseHistory(PurchaseHistoryMessage) returns (generalResponse){}
+rpc ProvideFeedback(ProvideFeedbackMessage) returns (generalResponse){}
+rpc GetSellerRating(GetSellerRatingMessage) returns (generalResponse){}
+rpc Logout(LogoutMessage) returns (generalResponse){}
+
+}
+
+message InsertMessage{
+    string table_name = 1;
+    string columns = 2;
+    string values = 3;
+}
+message UpdateMessage{
+    string table_name = 1;
+    string columns = 2;
+    string values = 3;
+    string condition_col = 4;
+    int32 condition_val = 5;
+}
+
+message SelectOneMessage{
+    string table_name = 1;
+    string column = 2;
+    string search_value = 3;
+}
+
+message SelectManyMessage{
+    string table_name = 1;
+    string columns = 2;
+    string search_values = 3;
+    string selected_columns = 4;
+}
+message generalResponse{
+    string msg=1;
+}
+
+message CreateAccountMessage{
+  string username = 1;
+  string password = 2;
+  string name = 3;
+}
+
+message LoginMessage{
+  string username = 1;
+  string password = 2;
+}
+
+message SearchProductMessage{
+    int32 item_category = 1;
+    string keywords = 2;
+}
+
+message AddToCartMessage{
+  int32 buyer_id = 1;
+  int32 product_id = 2;
+  int32 quantity = 3;
+}
+
+message RemoveFromCartMessage{
+  int32 buyer_id = 1;
+  int32 product_id = 2;
+  int32 quantity = 3;
+}
+
+message ClearCartMessage{
+    int32 buyer_id = 1;
+}
+
+message DisplayCartMessage{
+    int32 buyer_id = 1;
+}
+
+message MakePurchaseMessage{
+    int32 buyer_id = 1;
+    string credit_card = 2;
+}
+
+message PurchaseHistoryMessage{
+    int32 buyer_id = 1;
+}
+
+message ProvideFeedbackMessage{
+    int32 buyer_id =1;
+    int32 product_id = 2;
+    string feedback_type = 3;
+}
+
+message GetSellerRatingMessage{
+    int32 seller_id = 1;
+}
+
+message LogoutMessage{
+    int32 buyer_id = 1;
+}
