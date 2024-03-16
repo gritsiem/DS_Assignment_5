@@ -1,7 +1,10 @@
+import psycopg2
 from concurrent import futures
 import time
 import pickle
 import os
+from dotenv import load_dotenv
+
 
 import grpc
 import products_pb2 as pb2
@@ -17,7 +20,7 @@ Server
     - Average response time for 10 function calls
     - Average throughput for a 1000 function calls
 '''
-
+load_dotenv()
 class ProductsDB:
     count=0
     def __init__(self):
@@ -30,140 +33,114 @@ class ProductsDB:
         self.loadDB()
 
     def loadDB(self):
-        # with open ("products_db.pkl", "rb") as f:
-        #     self.db = pickle.load(f)
+        pw = os.getenv('PASSWORD')
+        self.connection = psycopg2.connect(f"dbname='products_db' user='postgres' host='localhost' password='{pw}'")
+        self.cursor = self.connection.cursor()
 
-        self.productTable = [{'id':1, 'item_name':"Bose Headphones", 'seller_id':2, 'item_category':0,'keywords':['music'],'condition':'Used', 'sale_price': 300.00, 'thumbs_up_count':0,'thumbs_down_count':0,'quantity':3 },\
-                            {'id':2, 'item_name':"Blender", 'seller_id':1, 'item_category':2,'keywords':['kitchen','blender'],'condition':'Used', 'sale_price': 20.00, 'thumbs_up_count':0,'thumbs_down_count':0,'quantity':1 },
-                            {'id':4, 'item_name':"Dell", 'seller_id':3, 'item_category':0,'keywords':['portable', 'laptop'],'condition':'Used', 'sale_price': 619.00, 'thumbs_up_count':1,'thumbs_down_count':1,'quantity':1 },
-                            {'id':3, 'item_name':"Macbook Air", 'seller_id':4, 'item_category':0,'keywords':['portable', 'laptop', 'macbook'],'condition':'New', 'sale_price': 1499.00, 'thumbs_up_count':1,'thumbs_down_count':1,'quantity':1 },\
-                            {'id':3, 'item_name':"Carpet", 'seller_id':4, 'item_category':1,'keywords':['home','decor'],'condition':'New', 'sale_price': 200.00, 'thumbs_up_count':0,'thumbs_down_count':0,'quantity':1 }]
-        self.db = {"product":(self.productTable, {"lastrowid":5})}
-        with open ("products_db.pkl", "wb") as f:
-            pickle.dump(self.db,f)
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS product (
+                id SERIAL PRIMARY KEY,
+                item_name VARCHAR(32),
+                seller_id INTEGER,
+                item_category INTEGER CHECK (item_category >= 0 AND item_category <= 9),
+                keywords VARCHAR(8) [],  
+                condition VARCHAR(10) CHECK (condition IN ('New', 'Used')),
+                sale_price DECIMAL,
+                quantity INTEGER,
+                thumbs_up_count INTEGER DEFAULT 0,
+                thumbs_down_count INTEGER DEFAULT 0,
+                CHECK (array_length(keywords, 1) <= 5)
+            );''')
 
-        print(self.db)
     def printTable(self,table):
         for row in table:
             print(row)
-    def InsertProduct(self, request, context):
-        column_names = request.columns.split(",")
-        values = request.values.split(",")
-        new_row = {}
-        self.db[request.table_name][1]['lastrowid'] += 1
-        self.printTable(self.db,[request.table_name])
-        newid = self.db[request.table_name][1]['lastrowid']
-        for col, val in zip(column_names,values):
-            new_row[col]=literal_eval(val)
-        new_row['id'] = newid
-        self.db[request.table_name][0].append(new_row)
-        response = pb2.generalResponse()
-        response.msg = str(newid)
-        return response
     
-    def UpdateRowByColumn(self,request,context):
-        table = self.db[request.table_name][0]
-        count = 0
-        for row in table:
-            if row[request.condition_col] == request.condition_val:
-                count+=1
-                for col, val in zip(request.columns,request.values):
-                    row[col]=val
-        self.printTable(self.db[request.table_name])
+    def AddSellerProduct(self, request, context):
+        # sellerid, name, category, condition, price, quantity, keywords
+        keywords = list_from_repeated(request.keywords)
+        try:
+            print("inserting")
+            self.cursor.execute("INSERT INTO product(seller_id, item_name , item_category, condition, sale_price, quantity, keywords) VALUES \
+                                (%s, %s, %s,%s,%s,%s, %s) returning id",(request.seller_id, request.name, request.category, request.condition, request.price, request.quantity, keywords))
+            self.connection.commit() 
+        except Exception as e:
+            print("Error: AddSellerProduct -- ",e)
+            return -1
+        prodid = self.cursor.fetchone()[0]
         response = pb2.generalResponse()
-        response.msg = str(count)
+        response.msg = str(prodid)
         return response
+
     
-    def UpdateRowByMulti(self,request,context):
+    def EditSellerProduct(self, request,context):
+        # prodid, price, sellerid
+        try:
+            self.cursor.execute("UPDATE product SET sale_price = %s WHERE id = %s AND seller_id= %s",(request.price, request.prodid, request.seller_id))
+            self.connection.commit()
+        except Exception as e:
+            print("Error: EditSellerProduct -- ",e)
+            return -1
 
-        smrequest = pb2.SelectManyMessage(table_name = request.table_name,columns = request.condition_cols,search_values = request.condition_vals,return_index = 1)
-        column_names = request.columns.split(",")
-        values = request.values.split(",")
-        condition_cols = request.condition_cols.split(",")
-        condition_vals = request.condition_vals.split(",")
-
-        table = self.db[request.table_name][0]
-        index_to_update = int((self.GetRowByMultiColumns(smrequest,context)).msg)
-        # print("updating!", index_to_update)
         response = pb2.generalResponse()
-        if(index_to_update!=-1):
-            for col, val in zip(column_names,values):
-                table[index_to_update][col]=val
-            print(index_to_update, self.db)
-            response.msg = str(1)
+        
+        res = self.cursor.rowcount
+        if(res == 0):
+            response.msg = str(-1)
             return response
-        response.msg = str(-1)
+        
+        response.msg = str(request.prodid)
         return response
     
-    def GetRowsByColumn(self,request,context):
-        # ProductsDB.count+=1
-        # print(ProductsDB.count)
-        # print("request",request)
-        # table = self.db[request.table_name][0]
-        # selected_columns = request.selected_columns.split(",")
-        # rows = list()
-        # modifiedRow = {}
-        # if not selected_columns:
-        #     for row in table:
-        #         if row[request.column] == request.search_value: 
-        #             rows.append(tuple(row.values()))
-        # else:
-        #     # print("selected columns present")
-        #     for row in table:
-        #         # print("For Current row, col val: ",row[request.column])                               
-        #         if str(row[request.column]) == request.search_value:  
-        #             for col in selected_columns:
-        #                 modifiedRow[col] =row[col]
-        #             # print(modifiedRow)
-        #             rows.append(tuple(modifiedRow.values()))
-        # print(rows)
+    def RemoveSellerProduct(self, request,context):
+        # prodid, seller_id
+        try:
+            self.cursor.execute("DELETE FROM product WHERE id = %s AND seller_id= %s",(request.prodid, request.seller_id))
+            self.connection.commit()
+        except Exception as e:
+            print("Error: RemoveSellerProduct -- ",e)
+            return -1
+        
         response = pb2.generalResponse()
-        response.msg = str([(2, 'Blender', 2, 'Used', 20.0, 1)])
-        return response
-    
-    def GetRowByMultiColumns(self, request, context):
-        # print(" parameters : ",request.columns,request.search_values)
-        # print(request)
-        table = self.db[request.table_name][0]
-        columns = request.columns.split(",")
-        values = request.search_values.split(",")
-        msg = tuple()
-        response = pb2.generalResponse()
-        ind = -1
-        for i,row in enumerate(table):
-            satisfiesSearch = True
-            for col,val in zip(columns,values):
-                # print("DEBUG: ",col, row[col],val)
-                if str(row[col]) != val:
-                    satisfiesSearch=False
-            if satisfiesSearch:
-                if request.return_index:
-                    response.msg = str(i)
-                    return response
-                response.msg = str(tuple(row.values()))
-                return response
-        if request.return_index:
-            response.msg = str(ind)
-            return response
-        print(self.db)
-        response.msg = str(msg)
-        return response
-    
-    def DeleteRow(self,request,context):
-        smrequest = pb2.SelectManyMessage(table_name = request.table_name,columns = request.condition_cols,search_values = request.condition_vals,return_index = 1)
 
-        table = self.db[request.table_name][0]
-        index_to_delete = int((self.GetRowByMultiColumns(smrequest, context)).msg)
-        response = pb2.generalResponse()
-        if(index_to_delete!=-1):
-            table.pop(index_to_delete)
-            for row in table:
-                print(row)
-            response.msg = str(1)
+        res = self.cursor.rowcount
+        if(res == 0):
+            response.msg = str(-1)
             return response
-        response.msg = str(0)
-
+        
+        response.msg = str(request.prodid)
         return response
+        
+    def GetSellerProducts(self, request,context):
+        # sellerid
+        products = []
+        response = pb2.generalResponse()
+        try:
+            self.cursor.execute("SELECT id, item_name, item_category, condition, sale_price, quantity FROM product WHERE seller_id = %s", (request.seller_id,))
+            products = self.cursor.fetchall()
+            self.connection.commit()
+        except:
+            response.msg = str([])
+            return response
+
+        response.msg = str(products)
+        return response 
+    
+    def GetSellerRatings(self,request,context):
+        # sellerid
+        try:
+        # print("seller id", sellerid)
+            self.cursor.execute("SELECT SUM(thumbs_up_count), SUM(thumbs_down_count) FROM product WHERE seller_id = %s", (request.seller_id,))
+            feedback = self.cursor.fetchone()
+            self.connection.commit()
+        except Exception as e:
+            print("Error: GetSellerRatings -- ",e)
+            return -1
+        response = pb2.generalResponse()
+        response.msg = str(feedback)
+        return response
+
+def list_from_repeated(field):
+        return [val for val in field]
 
 
 def serve():

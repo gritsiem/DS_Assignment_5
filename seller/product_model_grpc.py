@@ -26,16 +26,14 @@ class ProductInterfaceGRPC:
         print(ProductInterfaceGRPC.counter)
 
     def addProduct(self, sellerid, name, category, condition, price, quantity, keywords):
-
-        print("inserting")
-        insertRequest = pb2.InsertMessage(table_name="product",  columns ="item_name,seller_id,item_category,condition,sale_price,quantity,keywords",values=f"{name},{sellerid},{category},{condition},{price},{quantity},{keywords}")
-        response = self.__stub.InsertProduct(insertRequest)
+        insertRequest = pb2.ProductItemMessage(seller_id= sellerid,name = name, category = category,  condition = condition,  price = price,  quantity = quantity,  keywords = keywords)
+        response = self.__stub.AddSellerProduct(insertRequest)
         return response.msg
     
     def editProduct(self, prodid, price, sellerid):
         try:
-            updateRequest = pb2.UpdateManyMessage(table_name="product",  columns ="sale_price",values=f"{price}", condition_cols = "id,seller_id", condition_vals=f"{prodid},{sellerid}")
-            response = self.__stub.UpdateRowByMulti(updateRequest)     
+            editRequest = pb2.ProductItemMessage(seller_id = sellerid, prodid = prodid, price = price)
+            response = self.__stub.EditSellerProduct(editRequest)     
         except Exception as e:
             print("exception", e)
             return -1
@@ -47,14 +45,14 @@ class ProductInterfaceGRPC:
     def removeProduct(self, prodid, seller_id):
         # newid = uuid.uuid1()
         try:
-            deleteRequest = pb2.DeleteMessage(table_name="product", condition_cols = "id,seller_id", condition_vals=f"{prodid},{seller_id}")
-            response = self.__stub.DeleteRow(deleteRequest)     
+            deleteRequest = pb2.ProductItemMessage(prodid = prodid, seller_id = seller_id)
+            response = self.__stub.RemoveSellerProduct(deleteRequest)     
             print("ID: ",response)
             # self.table.append({"id": newid, "username": un,"password":pw})
         except:
             print("exception")
             return -1
-        if int(response.msg) == 0:
+        if int(response.msg) == -1:
             return -1
         return prodid
     
@@ -64,30 +62,25 @@ class ProductInterfaceGRPC:
         # print(ProductInterfaceGRPC.counter)
         products = []
         #try:
-        msg = f""
-        selectRequest = pb2.SelectOneMessage(table_name="product",  column ="seller_id", search_value=f"{sellerid}", selected_columns = "id,item_name,item_category,condition,sale_price,quantity")
-        products = self.__stub.GetRowsByColumn(selectRequest)     
+        getProductsRequest = pb2.ProductItemMessage(seller_id = sellerid)
+        response = self.__stub.GetSellerProducts(getProductsRequest)     
         # Fetch all
         # print("whoop ",products.msg)
-        products = literal_eval(products.msg)
+        products = literal_eval(response.msg)
         return products 
     
     def getRatings(self,sellerid):
         try:
             # print("seller id", sellerid)
-            selectRequest = pb2.SelectOneMessage(table_name="product",  column ="seller_id", search_value=f"{sellerid}", selected_columns = "thumbs_up_count,thumbs_down_count")
-            response = self.__stub.GetRowsByColumn(selectRequest)     
+            getRatingsRequest = pb2.ProductItemMessage(seller_id=sellerid)
+            response = self.__stub.GetSellerRatings(getRatingsRequest)     
             # Fetch all
             feedbacks = response.msg
         except Exception as e:
             print(e)
             return -1
-        feedbacks = literal_eval(feedbacks)
-        thumbsups = 0
-        thumbsdowns = 0
-        for feedback in feedbacks:
-            thumbsups+=feedback[0]
-            thumbsdowns += feedback[1]
+        thumbsups, thumbsdowns = literal_eval(feedbacks)
+
         return thumbsups, thumbsdowns
     def close_conn(self):
         # self.channel.close()
@@ -95,8 +88,8 @@ class ProductInterfaceGRPC:
 
 if __name__ == "__main__":
     client = ProductInterfaceGRPC()
-    # print(client.addProduct(2, "randomproduct", 9, 1, 100.00, 3, "['random']"))
+    # print(client.addProduct(2, "randomproduct", 9, "New", 100.00, 3, ['random',"rand"]))
+    # print(client.editProduct(2,25.00,4))
     # print(client.getProducts(1))
-    # print(client.getRatings(3))
-    # print(client.editProduct(2,25.00,1))
-    print(client.removeProduct(2,1))
+    # print(client.removeProduct(9,2))
+    print(client.getRatings(3))

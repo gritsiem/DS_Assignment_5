@@ -14,34 +14,29 @@ class ProductsStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetRowsByColumn = channel.unary_unary(
-                '/products.Products/GetRowsByColumn',
-                request_serializer=products__pb2.SelectOneMessage.SerializeToString,
+        self.AddSellerProduct = channel.unary_unary(
+                '/products.Products/AddSellerProduct',
+                request_serializer=products__pb2.ProductItemMessage.SerializeToString,
                 response_deserializer=products__pb2.generalResponse.FromString,
                 )
-        self.GetRowByMultiColumns = channel.unary_unary(
-                '/products.Products/GetRowByMultiColumns',
-                request_serializer=products__pb2.SelectManyMessage.SerializeToString,
+        self.EditSellerProduct = channel.unary_unary(
+                '/products.Products/EditSellerProduct',
+                request_serializer=products__pb2.ProductItemMessage.SerializeToString,
                 response_deserializer=products__pb2.generalResponse.FromString,
                 )
-        self.InsertProduct = channel.unary_unary(
-                '/products.Products/InsertProduct',
-                request_serializer=products__pb2.InsertMessage.SerializeToString,
+        self.GetSellerProducts = channel.unary_unary(
+                '/products.Products/GetSellerProducts',
+                request_serializer=products__pb2.ProductItemMessage.SerializeToString,
                 response_deserializer=products__pb2.generalResponse.FromString,
                 )
-        self.UpdateRowByColumn = channel.unary_unary(
-                '/products.Products/UpdateRowByColumn',
-                request_serializer=products__pb2.UpdateMessage.SerializeToString,
+        self.RemoveSellerProduct = channel.unary_unary(
+                '/products.Products/RemoveSellerProduct',
+                request_serializer=products__pb2.ProductItemMessage.SerializeToString,
                 response_deserializer=products__pb2.generalResponse.FromString,
                 )
-        self.UpdateRowByMulti = channel.unary_unary(
-                '/products.Products/UpdateRowByMulti',
-                request_serializer=products__pb2.UpdateManyMessage.SerializeToString,
-                response_deserializer=products__pb2.generalResponse.FromString,
-                )
-        self.DeleteRow = channel.unary_unary(
-                '/products.Products/DeleteRow',
-                request_serializer=products__pb2.DeleteMessage.SerializeToString,
+        self.GetSellerRatings = channel.unary_unary(
+                '/products.Products/GetSellerRatings',
+                request_serializer=products__pb2.ProductItemMessage.SerializeToString,
                 response_deserializer=products__pb2.generalResponse.FromString,
                 )
 
@@ -49,37 +44,31 @@ class ProductsStub(object):
 class ProductsServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def GetRowsByColumn(self, request, context):
+    def AddSellerProduct(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetRowByMultiColumns(self, request, context):
+    def EditSellerProduct(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def InsertProduct(self, request, context):
+    def GetSellerProducts(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UpdateRowByColumn(self, request, context):
+    def RemoveSellerProduct(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UpdateRowByMulti(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DeleteRow(self, request, context):
+    def GetSellerRatings(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -88,34 +77,29 @@ class ProductsServicer(object):
 
 def add_ProductsServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetRowsByColumn': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetRowsByColumn,
-                    request_deserializer=products__pb2.SelectOneMessage.FromString,
+            'AddSellerProduct': grpc.unary_unary_rpc_method_handler(
+                    servicer.AddSellerProduct,
+                    request_deserializer=products__pb2.ProductItemMessage.FromString,
                     response_serializer=products__pb2.generalResponse.SerializeToString,
             ),
-            'GetRowByMultiColumns': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetRowByMultiColumns,
-                    request_deserializer=products__pb2.SelectManyMessage.FromString,
+            'EditSellerProduct': grpc.unary_unary_rpc_method_handler(
+                    servicer.EditSellerProduct,
+                    request_deserializer=products__pb2.ProductItemMessage.FromString,
                     response_serializer=products__pb2.generalResponse.SerializeToString,
             ),
-            'InsertProduct': grpc.unary_unary_rpc_method_handler(
-                    servicer.InsertProduct,
-                    request_deserializer=products__pb2.InsertMessage.FromString,
+            'GetSellerProducts': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSellerProducts,
+                    request_deserializer=products__pb2.ProductItemMessage.FromString,
                     response_serializer=products__pb2.generalResponse.SerializeToString,
             ),
-            'UpdateRowByColumn': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateRowByColumn,
-                    request_deserializer=products__pb2.UpdateMessage.FromString,
+            'RemoveSellerProduct': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemoveSellerProduct,
+                    request_deserializer=products__pb2.ProductItemMessage.FromString,
                     response_serializer=products__pb2.generalResponse.SerializeToString,
             ),
-            'UpdateRowByMulti': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateRowByMulti,
-                    request_deserializer=products__pb2.UpdateManyMessage.FromString,
-                    response_serializer=products__pb2.generalResponse.SerializeToString,
-            ),
-            'DeleteRow': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteRow,
-                    request_deserializer=products__pb2.DeleteMessage.FromString,
+            'GetSellerRatings': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSellerRatings,
+                    request_deserializer=products__pb2.ProductItemMessage.FromString,
                     response_serializer=products__pb2.generalResponse.SerializeToString,
             ),
     }
@@ -129,7 +113,7 @@ class Products(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GetRowsByColumn(request,
+    def AddSellerProduct(request,
             target,
             options=(),
             channel_credentials=None,
@@ -139,14 +123,14 @@ class Products(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/products.Products/GetRowsByColumn',
-            products__pb2.SelectOneMessage.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/products.Products/AddSellerProduct',
+            products__pb2.ProductItemMessage.SerializeToString,
             products__pb2.generalResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def GetRowByMultiColumns(request,
+    def EditSellerProduct(request,
             target,
             options=(),
             channel_credentials=None,
@@ -156,14 +140,14 @@ class Products(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/products.Products/GetRowByMultiColumns',
-            products__pb2.SelectManyMessage.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/products.Products/EditSellerProduct',
+            products__pb2.ProductItemMessage.SerializeToString,
             products__pb2.generalResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def InsertProduct(request,
+    def GetSellerProducts(request,
             target,
             options=(),
             channel_credentials=None,
@@ -173,14 +157,14 @@ class Products(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/products.Products/InsertProduct',
-            products__pb2.InsertMessage.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/products.Products/GetSellerProducts',
+            products__pb2.ProductItemMessage.SerializeToString,
             products__pb2.generalResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def UpdateRowByColumn(request,
+    def RemoveSellerProduct(request,
             target,
             options=(),
             channel_credentials=None,
@@ -190,14 +174,14 @@ class Products(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/products.Products/UpdateRowByColumn',
-            products__pb2.UpdateMessage.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/products.Products/RemoveSellerProduct',
+            products__pb2.ProductItemMessage.SerializeToString,
             products__pb2.generalResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def UpdateRowByMulti(request,
+    def GetSellerRatings(request,
             target,
             options=(),
             channel_credentials=None,
@@ -207,25 +191,8 @@ class Products(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/products.Products/UpdateRowByMulti',
-            products__pb2.UpdateManyMessage.SerializeToString,
-            products__pb2.generalResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def DeleteRow(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/products.Products/DeleteRow',
-            products__pb2.DeleteMessage.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/products.Products/GetSellerRatings',
+            products__pb2.ProductItemMessage.SerializeToString,
             products__pb2.generalResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

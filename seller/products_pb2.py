@@ -19,207 +19,76 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0eproducts.proto\x12\x08products\"f\n\x10SelectOneMessage\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x0e\n\x06\x63olumn\x18\x02 \x01(\t\x12\x14\n\x0csearch_value\x18\x03 \x01(\t\x12\x18\n\x10selected_columns\x18\x04 \x01(\t\"e\n\x11SelectManyMessage\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x02 \x01(\t\x12\x15\n\rsearch_values\x18\x03 \x01(\t\x12\x14\n\x0creturn_index\x18\x04 \x01(\x05\"D\n\rInsertMessage\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x02 \x01(\t\x12\x0e\n\x06values\x18\x03 \x01(\t\"r\n\rUpdateMessage\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x02 \x01(\t\x12\x0e\n\x06values\x18\x03 \x01(\t\x12\x15\n\rcondition_col\x18\x04 \x01(\t\x12\x15\n\rcondition_val\x18\x05 \x01(\x05\"x\n\x11UpdateManyMessage\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x02 \x01(\t\x12\x0e\n\x06values\x18\x03 \x01(\t\x12\x16\n\x0e\x63ondition_cols\x18\x04 \x01(\t\x12\x16\n\x0e\x63ondition_vals\x18\x05 \x01(\t\"S\n\rDeleteMessage\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x63ondition_cols\x18\x04 \x01(\t\x12\x16\n\x0e\x63ondition_vals\x18\x05 \x01(\t\"\x1e\n\x0fgeneralResponse\x12\x0b\n\x03msg\x18\x01 \x01(\t2\xcb\x03\n\x08Products\x12J\n\x0fGetRowsByColumn\x12\x1a.products.SelectOneMessage\x1a\x19.products.generalResponse\"\x00\x12P\n\x14GetRowByMultiColumns\x12\x1b.products.SelectManyMessage\x1a\x19.products.generalResponse\"\x00\x12\x45\n\rInsertProduct\x12\x17.products.InsertMessage\x1a\x19.products.generalResponse\"\x00\x12I\n\x11UpdateRowByColumn\x12\x17.products.UpdateMessage\x1a\x19.products.generalResponse\"\x00\x12L\n\x10UpdateRowByMulti\x12\x1b.products.UpdateManyMessage\x1a\x19.products.generalResponse\"\x00\x12\x41\n\tDeleteRow\x12\x17.products.DeleteMessage\x1a\x19.products.generalResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0eproducts.proto\x12\x08products\"\x81\x02\n\x12ProductItemMessage\x12\x11\n\tseller_id\x18\x01 \x01(\x05\x12\x13\n\x06prodid\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x11\n\x04name\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x15\n\x08\x63\x61tegory\x18\x04 \x01(\x05H\x02\x88\x01\x01\x12\x16\n\tcondition\x18\x05 \x01(\tH\x03\x88\x01\x01\x12\x12\n\x05price\x18\x06 \x01(\x02H\x04\x88\x01\x01\x12\x15\n\x08quantity\x18\x07 \x01(\x05H\x05\x88\x01\x01\x12\x10\n\x08keywords\x18\x08 \x03(\tB\t\n\x07_prodidB\x07\n\x05_nameB\x0b\n\t_categoryB\x0c\n\n_conditionB\x08\n\x06_priceB\x0b\n\t_quantity\"E\n\x13ProductsListMessage\x12.\n\x08products\x18\x01 \x03(\x0b\x32\x1c.products.ProductItemMessage\"\x1e\n\x0fgeneralResponse\x12\x0b\n\x03msg\x18\x01 \x01(\t2\x9a\x03\n\x08Products\x12M\n\x10\x41\x64\x64SellerProduct\x12\x1c.products.ProductItemMessage\x1a\x19.products.generalResponse\"\x00\x12N\n\x11\x45\x64itSellerProduct\x12\x1c.products.ProductItemMessage\x1a\x19.products.generalResponse\"\x00\x12N\n\x11GetSellerProducts\x12\x1c.products.ProductItemMessage\x1a\x19.products.generalResponse\"\x00\x12P\n\x13RemoveSellerProduct\x12\x1c.products.ProductItemMessage\x1a\x19.products.generalResponse\"\x00\x12M\n\x10GetSellerRatings\x12\x1c.products.ProductItemMessage\x1a\x19.products.generalResponse\"\x00\x62\x06proto3'
 )
 
 
 
 
-_SELECTONEMESSAGE = _descriptor.Descriptor(
-  name='SelectOneMessage',
-  full_name='products.SelectOneMessage',
+_PRODUCTITEMMESSAGE = _descriptor.Descriptor(
+  name='ProductItemMessage',
+  full_name='products.ProductItemMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='table_name', full_name='products.SelectOneMessage.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      name='seller_id', full_name='products.ProductItemMessage.seller_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='column', full_name='products.SelectOneMessage.column', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      name='prodid', full_name='products.ProductItemMessage.prodid', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='search_value', full_name='products.SelectOneMessage.search_value', index=2,
+      name='name', full_name='products.ProductItemMessage.name', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='selected_columns', full_name='products.SelectOneMessage.selected_columns', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=28,
-  serialized_end=130,
-)
-
-
-_SELECTMANYMESSAGE = _descriptor.Descriptor(
-  name='SelectManyMessage',
-  full_name='products.SelectManyMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='products.SelectManyMessage.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='columns', full_name='products.SelectManyMessage.columns', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='search_values', full_name='products.SelectManyMessage.search_values', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='return_index', full_name='products.SelectManyMessage.return_index', index=3,
+      name='category', full_name='products.ProductItemMessage.category', index=3,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=132,
-  serialized_end=233,
-)
-
-
-_INSERTMESSAGE = _descriptor.Descriptor(
-  name='InsertMessage',
-  full_name='products.InsertMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
     _descriptor.FieldDescriptor(
-      name='table_name', full_name='products.InsertMessage.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
+      name='condition', full_name='products.ProductItemMessage.condition', index=4,
+      number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='columns', full_name='products.InsertMessage.columns', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      name='price', full_name='products.ProductItemMessage.price', index=5,
+      number=6, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='values', full_name='products.InsertMessage.values', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=235,
-  serialized_end=303,
-)
-
-
-_UPDATEMESSAGE = _descriptor.Descriptor(
-  name='UpdateMessage',
-  full_name='products.UpdateMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='products.UpdateMessage.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='columns', full_name='products.UpdateMessage.columns', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='values', full_name='products.UpdateMessage.values', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='condition_col', full_name='products.UpdateMessage.condition_col', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='condition_val', full_name='products.UpdateMessage.condition_val', index=4,
-      number=5, type=5, cpp_type=1, label=1,
+      name='quantity', full_name='products.ProductItemMessage.quantity', index=6,
+      number=7, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='keywords', full_name='products.ProductItemMessage.keywords', index=7,
+      number=8, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -231,52 +100,54 @@ _UPDATEMESSAGE = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
+    _descriptor.OneofDescriptor(
+      name='_prodid', full_name='products.ProductItemMessage._prodid',
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+    _descriptor.OneofDescriptor(
+      name='_name', full_name='products.ProductItemMessage._name',
+      index=1, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+    _descriptor.OneofDescriptor(
+      name='_category', full_name='products.ProductItemMessage._category',
+      index=2, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+    _descriptor.OneofDescriptor(
+      name='_condition', full_name='products.ProductItemMessage._condition',
+      index=3, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+    _descriptor.OneofDescriptor(
+      name='_price', full_name='products.ProductItemMessage._price',
+      index=4, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+    _descriptor.OneofDescriptor(
+      name='_quantity', full_name='products.ProductItemMessage._quantity',
+      index=5, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=305,
-  serialized_end=419,
+  serialized_start=29,
+  serialized_end=286,
 )
 
 
-_UPDATEMANYMESSAGE = _descriptor.Descriptor(
-  name='UpdateManyMessage',
-  full_name='products.UpdateManyMessage',
+_PRODUCTSLISTMESSAGE = _descriptor.Descriptor(
+  name='ProductsListMessage',
+  full_name='products.ProductsListMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='table_name', full_name='products.UpdateManyMessage.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='columns', full_name='products.UpdateManyMessage.columns', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='values', full_name='products.UpdateManyMessage.values', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='condition_cols', full_name='products.UpdateManyMessage.condition_cols', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='condition_vals', full_name='products.UpdateManyMessage.condition_vals', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      name='products', full_name='products.ProductsListMessage.products', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -292,54 +163,8 @@ _UPDATEMANYMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=421,
-  serialized_end=541,
-)
-
-
-_DELETEMESSAGE = _descriptor.Descriptor(
-  name='DeleteMessage',
-  full_name='products.DeleteMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='products.DeleteMessage.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='condition_cols', full_name='products.DeleteMessage.condition_cols', index=1,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='condition_vals', full_name='products.DeleteMessage.condition_vals', index=2,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=543,
-  serialized_end=626,
+  serialized_start=288,
+  serialized_end=357,
 )
 
 
@@ -370,60 +195,47 @@ _GENERALRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=628,
-  serialized_end=658,
+  serialized_start=359,
+  serialized_end=389,
 )
 
-DESCRIPTOR.message_types_by_name['SelectOneMessage'] = _SELECTONEMESSAGE
-DESCRIPTOR.message_types_by_name['SelectManyMessage'] = _SELECTMANYMESSAGE
-DESCRIPTOR.message_types_by_name['InsertMessage'] = _INSERTMESSAGE
-DESCRIPTOR.message_types_by_name['UpdateMessage'] = _UPDATEMESSAGE
-DESCRIPTOR.message_types_by_name['UpdateManyMessage'] = _UPDATEMANYMESSAGE
-DESCRIPTOR.message_types_by_name['DeleteMessage'] = _DELETEMESSAGE
+_PRODUCTITEMMESSAGE.oneofs_by_name['_prodid'].fields.append(
+  _PRODUCTITEMMESSAGE.fields_by_name['prodid'])
+_PRODUCTITEMMESSAGE.fields_by_name['prodid'].containing_oneof = _PRODUCTITEMMESSAGE.oneofs_by_name['_prodid']
+_PRODUCTITEMMESSAGE.oneofs_by_name['_name'].fields.append(
+  _PRODUCTITEMMESSAGE.fields_by_name['name'])
+_PRODUCTITEMMESSAGE.fields_by_name['name'].containing_oneof = _PRODUCTITEMMESSAGE.oneofs_by_name['_name']
+_PRODUCTITEMMESSAGE.oneofs_by_name['_category'].fields.append(
+  _PRODUCTITEMMESSAGE.fields_by_name['category'])
+_PRODUCTITEMMESSAGE.fields_by_name['category'].containing_oneof = _PRODUCTITEMMESSAGE.oneofs_by_name['_category']
+_PRODUCTITEMMESSAGE.oneofs_by_name['_condition'].fields.append(
+  _PRODUCTITEMMESSAGE.fields_by_name['condition'])
+_PRODUCTITEMMESSAGE.fields_by_name['condition'].containing_oneof = _PRODUCTITEMMESSAGE.oneofs_by_name['_condition']
+_PRODUCTITEMMESSAGE.oneofs_by_name['_price'].fields.append(
+  _PRODUCTITEMMESSAGE.fields_by_name['price'])
+_PRODUCTITEMMESSAGE.fields_by_name['price'].containing_oneof = _PRODUCTITEMMESSAGE.oneofs_by_name['_price']
+_PRODUCTITEMMESSAGE.oneofs_by_name['_quantity'].fields.append(
+  _PRODUCTITEMMESSAGE.fields_by_name['quantity'])
+_PRODUCTITEMMESSAGE.fields_by_name['quantity'].containing_oneof = _PRODUCTITEMMESSAGE.oneofs_by_name['_quantity']
+_PRODUCTSLISTMESSAGE.fields_by_name['products'].message_type = _PRODUCTITEMMESSAGE
+DESCRIPTOR.message_types_by_name['ProductItemMessage'] = _PRODUCTITEMMESSAGE
+DESCRIPTOR.message_types_by_name['ProductsListMessage'] = _PRODUCTSLISTMESSAGE
 DESCRIPTOR.message_types_by_name['generalResponse'] = _GENERALRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-SelectOneMessage = _reflection.GeneratedProtocolMessageType('SelectOneMessage', (_message.Message,), {
-  'DESCRIPTOR' : _SELECTONEMESSAGE,
+ProductItemMessage = _reflection.GeneratedProtocolMessageType('ProductItemMessage', (_message.Message,), {
+  'DESCRIPTOR' : _PRODUCTITEMMESSAGE,
   '__module__' : 'products_pb2'
-  # @@protoc_insertion_point(class_scope:products.SelectOneMessage)
+  # @@protoc_insertion_point(class_scope:products.ProductItemMessage)
   })
-_sym_db.RegisterMessage(SelectOneMessage)
+_sym_db.RegisterMessage(ProductItemMessage)
 
-SelectManyMessage = _reflection.GeneratedProtocolMessageType('SelectManyMessage', (_message.Message,), {
-  'DESCRIPTOR' : _SELECTMANYMESSAGE,
+ProductsListMessage = _reflection.GeneratedProtocolMessageType('ProductsListMessage', (_message.Message,), {
+  'DESCRIPTOR' : _PRODUCTSLISTMESSAGE,
   '__module__' : 'products_pb2'
-  # @@protoc_insertion_point(class_scope:products.SelectManyMessage)
+  # @@protoc_insertion_point(class_scope:products.ProductsListMessage)
   })
-_sym_db.RegisterMessage(SelectManyMessage)
-
-InsertMessage = _reflection.GeneratedProtocolMessageType('InsertMessage', (_message.Message,), {
-  'DESCRIPTOR' : _INSERTMESSAGE,
-  '__module__' : 'products_pb2'
-  # @@protoc_insertion_point(class_scope:products.InsertMessage)
-  })
-_sym_db.RegisterMessage(InsertMessage)
-
-UpdateMessage = _reflection.GeneratedProtocolMessageType('UpdateMessage', (_message.Message,), {
-  'DESCRIPTOR' : _UPDATEMESSAGE,
-  '__module__' : 'products_pb2'
-  # @@protoc_insertion_point(class_scope:products.UpdateMessage)
-  })
-_sym_db.RegisterMessage(UpdateMessage)
-
-UpdateManyMessage = _reflection.GeneratedProtocolMessageType('UpdateManyMessage', (_message.Message,), {
-  'DESCRIPTOR' : _UPDATEMANYMESSAGE,
-  '__module__' : 'products_pb2'
-  # @@protoc_insertion_point(class_scope:products.UpdateManyMessage)
-  })
-_sym_db.RegisterMessage(UpdateManyMessage)
-
-DeleteMessage = _reflection.GeneratedProtocolMessageType('DeleteMessage', (_message.Message,), {
-  'DESCRIPTOR' : _DELETEMESSAGE,
-  '__module__' : 'products_pb2'
-  # @@protoc_insertion_point(class_scope:products.DeleteMessage)
-  })
-_sym_db.RegisterMessage(DeleteMessage)
+_sym_db.RegisterMessage(ProductsListMessage)
 
 generalResponse = _reflection.GeneratedProtocolMessageType('generalResponse', (_message.Message,), {
   'DESCRIPTOR' : _GENERALRESPONSE,
@@ -441,65 +253,55 @@ _PRODUCTS = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=661,
-  serialized_end=1120,
+  serialized_start=392,
+  serialized_end=802,
   methods=[
   _descriptor.MethodDescriptor(
-    name='GetRowsByColumn',
-    full_name='products.Products.GetRowsByColumn',
+    name='AddSellerProduct',
+    full_name='products.Products.AddSellerProduct',
     index=0,
     containing_service=None,
-    input_type=_SELECTONEMESSAGE,
+    input_type=_PRODUCTITEMMESSAGE,
     output_type=_GENERALRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='GetRowByMultiColumns',
-    full_name='products.Products.GetRowByMultiColumns',
+    name='EditSellerProduct',
+    full_name='products.Products.EditSellerProduct',
     index=1,
     containing_service=None,
-    input_type=_SELECTMANYMESSAGE,
+    input_type=_PRODUCTITEMMESSAGE,
     output_type=_GENERALRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='InsertProduct',
-    full_name='products.Products.InsertProduct',
+    name='GetSellerProducts',
+    full_name='products.Products.GetSellerProducts',
     index=2,
     containing_service=None,
-    input_type=_INSERTMESSAGE,
+    input_type=_PRODUCTITEMMESSAGE,
     output_type=_GENERALRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='UpdateRowByColumn',
-    full_name='products.Products.UpdateRowByColumn',
+    name='RemoveSellerProduct',
+    full_name='products.Products.RemoveSellerProduct',
     index=3,
     containing_service=None,
-    input_type=_UPDATEMESSAGE,
+    input_type=_PRODUCTITEMMESSAGE,
     output_type=_GENERALRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='UpdateRowByMulti',
-    full_name='products.Products.UpdateRowByMulti',
+    name='GetSellerRatings',
+    full_name='products.Products.GetSellerRatings',
     index=4,
     containing_service=None,
-    input_type=_UPDATEMANYMESSAGE,
-    output_type=_GENERALRESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteRow',
-    full_name='products.Products.DeleteRow',
-    index=5,
-    containing_service=None,
-    input_type=_DELETEMESSAGE,
+    input_type=_PRODUCTITEMMESSAGE,
     output_type=_GENERALRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
