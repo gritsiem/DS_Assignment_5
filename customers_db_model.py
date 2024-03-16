@@ -28,7 +28,7 @@ class CustomersDatabase:
         except Exception as e:
             self.connection.rollback()
             print(f"Error creating account: {e}")
-            return "Error while creating account."
+            return f"Error while creating account: {e}"
 
     def login(self, username, password):
         try:
