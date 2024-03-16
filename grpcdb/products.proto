@@ -11,6 +11,8 @@ rpc UpdateRowByColumn(UpdateMessage) returns (generalResponse){}
 rpc UpdateRowByMulti(UpdateManyMessage) returns (generalResponse){}
 rpc DeleteRow(DeleteMessage) returns (generalResponse){}
 
+rpc SearchProduct(SearchProductsRequestMessage) returns (SearchProductsResponseMessage){}
+
 }
 
 
@@ -56,4 +58,26 @@ message DeleteMessage{
 
 message generalResponse{
     string msg=1;
+}
+
+message SearchProductsRequestMessage {
+  string item_category = 1;
+  repeated string keywords = 2;
+}
+
+message Product {
+  int32 id = 1;
+  string item_name = 2;
+  int32 seller_id = 3;
+  int32 item_category = 4;
+  repeated string keywords = 5;
+  string condition = 6;
+  string sale_price = 7;
+  int32 quantity = 8;
+  int32 thumbs_up_count=9;
+  int32 thumbs_down_count=10;
+}
+
+message SearchProductsResponseMessage {
+  repeated Product products = 1;
 }
