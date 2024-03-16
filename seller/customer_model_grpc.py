@@ -22,10 +22,10 @@ class CustomerInterfaceGRPC:
         self.channel = grpc.insecure_channel(self._ADDRESS,options=(('grpc.enable_http_proxy',0),))
         self.__stub = pb2grpc.CustomersStub(self.channel)
 
-    def insertCustomer(self, un, pw):
+    def registerSeller(self, un, pw):
         try:
-            insertRequest = pb2.InsertMessage(table_name="seller",  columns ="username,password",values=f"{un},{pw}")
-            response = self.__stub.InsertSeller(insertRequest)
+            registerRequest = pb2.UserCredentialsMessage(username=un, password = pw)
+            response = self.__stub.RegisterSellerDB(registerRequest)
         except Exception as e:
             print(e)
             return -1
@@ -37,29 +37,23 @@ class CustomerInterfaceGRPC:
     def getUser(self, un, pw=None):
         user = None
         try:
-            if pw:
-
-                selectRequest = pb2.SelectManyMessage(table_name="seller", columns ="username,password",search_values=f"{un},{pw}")
-                response = self.__stub.GetRowByMultiColumns(selectRequest)
-            else:
-                selectRequest = pb2.SelectOneMessage(table_name="seller", column ="username",search_value=un)
-                response = self.__stub.GetRowsByColumn(selectRequest)
+            request = pb2.UserCredentialsMessage( username=un, password = pw)
+            response = self.__stub.GetUserDB(request)
         except Exception as e:
             print(e)
             return -1
-        users = literal_eval(response.msg)
-        if(len(users)):
-            user = users[0]
+        user = literal_eval(response.msg)
         return user
     
     def updateFeedback(self, seller_id,tu,td):
         # msg = f"UPDATEBYCOL;seller;thumbs_up_count,thumbs_down_count;{tu},{td};id;{seller_id}"
-        updateRequest = pb2.UpdateMessage(table_name="seller", columns ="thumbs_up_count,thumbs_down_count",values=f"{tu},{td}", condition_col="id", condition_val=seller_id)
-        response = self.__stub.UpdateRowByColumn(updateRequest)
+        updateRequest = pb2.SellerFeedbackMessage(tu = tu,td = td, seller_id=seller_id)
+        response = self.__stub.UpdateSellerFeedback(updateRequest)
         # return didUpdate
         return response.msg
     
 
 if __name__ == "__main__":
     client = CustomerInterfaceGRPC()
+    # print(client.registerSeller("user9","usernine"))
     print(client.updateFeedback(3,3,4))
