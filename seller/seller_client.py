@@ -6,23 +6,27 @@ Client can
 - send messages to server
 - Additionally an option to generate client side inputs automatically / use actual user input
 '''
-
+import random
+import os
 import requests
 import time
 import threading
+from dotenv import load_dotenv
 
-
+load_dotenv()
 class Client():
-    __URLS = {'home':'http://127.0.0.1:5000'}
+    __servers = os.getenv('SELLER_SERVERS').strip().split("\n")
         
     def __init__(self):
-        Client.__URLS.update({
-            'login': Client.__URLS["home"]+'/login',
-            'register': Client.__URLS["home"]+'/register',
-            'products': Client.__URLS["home"]+'/products',   
-            'ratings': Client.__URLS["home"]+'/ratings',         
-            'logout': Client.__URLS["home"]+'/logout',         
-        })
+        self.__home = "http://"+ random.choice(Client.__servers)
+        print("Connecting to ", self.__home)
+        self.__URLS= {'home':self.__home,
+            'login': self.__home+'/login',
+            'register': self.__home+'/register',
+            'products': self.__home+'/products',   
+            'ratings': self.__home+'/ratings',         
+            'logout': self.__home+'/logout',         
+        }
         self.__current_function = None
         self.__ERRORS={
             'BAD_CHOICE': "Please choose one of the given options"
