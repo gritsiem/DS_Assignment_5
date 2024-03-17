@@ -49,7 +49,7 @@ class ProductInterfaceGRPC:
             response = self.__stub.RemoveSellerProduct(deleteRequest)     
             print("ID: ",response)
             # self.table.append({"id": newid, "username": un,"password":pw})
-        except:
+        except Exception as e:
             print("exception")
             return -1
         if int(response.msg) == -1:

@@ -43,7 +43,7 @@ class Seller:
         # add user to the DB
 
         if not self.db.getUser(un):
-            id = self.db.insertCustomer(un, pw)
+            id = self.db.registerSeller(un, pw)
             user = {'id':id,'un':un}
             token = jwt.encode(user,"secret",algorithm="HS256")
             return 1,{"token":token}
@@ -153,7 +153,7 @@ class Products:
         decoded_token = jwt.decode(token, options={"verify_signature":False})
         sellerid = decoded_token["id"]
         try:
-            id = self.proddb.editProduct(prodid,price, sellerid)
+            id = self.proddb.editProduct(int(prodid),float(price), int(sellerid))
             # self.table.append({"id": id, "productname": name,"category":category, "conditon" : condition, "price": price, "keywords": keywords})
         except Exception as e:
             print("there was an error: ",e)
@@ -164,7 +164,7 @@ class Products:
         decoded_token = jwt.decode(token, options={"verify_signature":False})
         sellerid = decoded_token["id"]
         try:
-            id = self.proddb.removeProduct(prodid, sellerid)
+            id = self.proddb.removeProduct(int(prodid), int(sellerid))
             # self.table.append({"id": id, "productname": name,"category":category, "conditon" : condition, "price": price, "keywords": keywords})
         except:
             print("there was an error")
@@ -364,3 +364,5 @@ class SellerPortal:
     def handleBadResponse(self):
         self.globalResponse["msg"] = self.INCORRECT_INPUT_ERROR
         self.globalResponse["invokeTime"] = None
+
+

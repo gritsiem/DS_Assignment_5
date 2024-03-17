@@ -1,1 +1,6 @@
 .env
+
+# pycache files
+
+__pycache__/
+../seller/__pycache__/

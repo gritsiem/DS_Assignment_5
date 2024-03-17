@@ -13,7 +13,7 @@ import threading
 
 
 class Client():
-    __URLS = {'home':'http://127.0.0.1:8080'}
+    __URLS = {'home':'http://127.0.0.1:5000'}
         
     def __init__(self):
         Client.__URLS.update({
@@ -44,10 +44,10 @@ class Client():
         self.__current_function==None
         pass
     def login(self):
-        # un = input("Please enter username: ")
-        # pw = input("Please enter password: ")
-        un = "user1"
-        pw = "userone"
+        un = input("Please enter username: ")
+        pw = input("Please enter password: ")
+        # un = "user1"
+        # pw = "userone"
         resp = requests.post(self.__URLS["login"], data={"username":un, "password":pw})
         resp = resp.json()
         self.loggedIn = True
