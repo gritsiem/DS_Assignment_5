@@ -3,11 +3,17 @@ import threading
 import time
 from flask import Flask, request, Response, jsonify
 import os
+import json
 from products_db_model import ProductsDatabase
 from customers_db_model import CustomersDatabase
 from dotenv import load_dotenv
-# import spyne_application
 from zeep import Client
+
+import grpc
+import customers_pb2_grpc
+import customers_pb2
+import products_pb2_grpc
+import products_pb2
 
 load_dotenv()
 
@@ -16,30 +22,70 @@ app = Flask(__name__)
 customers_db = CustomersDatabase()
 products_db = ProductsDatabase()
 
+def get_customers_stub():
+    return customers_pb2_grpc.CustomersStub(grpc.insecure_channel('localhost:5070'))
+
+def get_products_stub():
+    return products_pb2_grpc.ProductsStub(grpc.insecure_channel('localhost:5080'))
+
+def create_account_with_grpc(username, password, name):
+    stub = get_customers_stub()
+    request = customers_pb2.CreateAccountRequestMessage(username=username, password=password, name=name)
+    response = stub.CreateAccount(request)
+    return response
+
 @app.route('/createaccount', methods = ['POST'])
 def handle_create_account():
     data = request.json
     username = data['username']
     password = data['password']
     name = data['name']
-    result = customers_db.create_account(username, password, name)
+    # result = customers_db.create_account(username, password, name)
+    result = create_account_with_grpc(username, password, name).msg
     if "Account created successfully" in result:
         return jsonify({"message": result}), 200
     else:
         return jsonify({"message": result}), 401
+
+def login_with_grpc(username, password):
+    login_stub = get_customers_stub()
+    login_request = customers_pb2.LoginRequestMessage(username=username, password=password)
+    response = login_stub.Login(login_request)
+    return response
+
+def get_buyer_id_with_grpc(username):
+    stub = get_customers_stub()
+    request = customers_pb2.GetBuyerIdRequestMessage(username=username)
+    response = stub.GetBuyerId(request)
+    return response
+
+def set_login_state_with_grpc(buyer_id, state):
+    stub = get_customers_stub()
+    request = customers_pb2.SetLoginStateRequestMessage(buyer_id=buyer_id, state = state)
+    response = stub.SetLoginState(request)
+    return response
 
 @app.route('/login', methods = ['POST'])
 def handle_login():
     data = request.json
     username = data['username']
     password = data['password']
-    result = customers_db.login(username, password)
+    result = login_with_grpc(username, password).msg
+    print(f"Login result in server: {result}")
     if "Login successful" in result:
-        buyer_id = customers_db.get_buyer_id(username)
-        customers_db.set_login_state(buyer_id, True)
+        buyer_id = get_buyer_id_with_grpc(username).buyer_id
+        print(f"Buyer Id in server: {buyer_id}")
+        set_login_state_with_grpc(buyer_id, True)
         return jsonify({"message": result, "buyer_id": buyer_id}), 200
     else:
         return jsonify({"message": result}), 401
+
+def search_product_with_grpc(item_category, keywords):
+    stub = get_products_stub()
+    request = products_pb2.SearchProductsRequestMessage(item_category=item_category, keywords= keywords)
+    response = stub.SearchProduct(request)
+    print(f"Search response at grpc client: {response}")
+    return response
 
 @app.route('/search', methods = ['POST'])
 def handle_search():
@@ -48,51 +94,84 @@ def handle_search():
     item_category = data['item_category']
     keywords = data['keywords']
     print(f"Keywords in server: {keywords}")
-    result = products_db.search_products(item_category, [keywords])
-    header = "Id Name Condition Sale_price Quantity"
-    formatted_results = "\n".join([header] + [f"{product[0]} {product[1]} {product[5]} {product[6]} {product[7]}" for product in result])
-    print(f"Formatted results: {formatted_results}")
-    return jsonify({"message": formatted_results}), 200
-    
+    # result = products_db.search_products(item_category, [keywords])
+    result = search_product_with_grpc(item_category, [keywords])
+    print(f"Search Result at server: {result}")
+    # header = "Id Name Condition Sale_price Quantity"
+    # formatted_results = "\n".join([header] + [f"{product[0]} {product[1]} {product[5]} {product[6]} {product[7]}" for product in result])
+    # print(f"Formatted results: {formatted_results}")
+    # return jsonify({"message": formatted_results}), 200
+    # return jsonify(json.dumps({"products": result}, indent=4)), 200
+    return jsonify(json.dumps(json.loads(result), indent=4))
+
+def add_to_cart_with_grpc(buyer_id, product_id, quantity):
+    stub = get_customers_stub()
+    request = customers_pb2.AddToCartRequestMessage(buyer_id=buyer_id, product_id=product_id, quantity=quantity)
+    response = stub.AddToCart(request).msg
+    return response
+
 @app.route('/additem', methods = ['POST'])
 def handle_add_to_cart():
     data = request.json
     buyer_id = data['buyer_id']
-    product_id = data['product_id']
-    quantity = data['quantity']
-    result = customers_db.add_to_cart(buyer_id, product_id, quantity)
+    product_id = int(data['product_id'])
+    quantity = int(data['quantity'])
+    # result = customers_db.add_to_cart(buyer_id, product_id, quantity)
+    result = add_to_cart_with_grpc(buyer_id, product_id, quantity)
     if "Item is added to the cart successfully" in result:
         return jsonify({"message": result}), 200
     else:
         return jsonify({"message": "Error adding an item to the cart"}), 401
 
+def remove_item_from_cart_with_grpc(buyer_id, product_id, quantity):
+    stub = get_customers_stub()
+    request = customers_pb2.RemoveFromCartRequestMessage(buyer_id=buyer_id, product_id=product_id, quantity=quantity)
+    response = stub.RemoveItemFromCart(request).msg
+    return response
+
 @app.route('/removeitem', methods = ['POST'])
 def handle_remove_item_from_cart():
     data = request.json
     buyer_id = data['buyer_id']
-    product_id = data['product_id']
-    quantity = data['quantity']
-    result = customers_db.remove_item_from_cart(buyer_id, product_id, quantity)
+    product_id = int(data['product_id'])
+    quantity = int(data['quantity'])
+    # result = customers_db.remove_item_from_cart(buyer_id, product_id, quantity)
+    result = remove_item_from_cart_with_grpc(buyer_id, product_id, quantity)
     if "Item removed from cart" in result:
         return jsonify({"message": result}), 200
     else:
         return jsonify({"message": result}), 401
 
+def clear_cart_with_grpc(buyer_id):
+    stub = get_customers_stub()
+    request = customers_pb2.ClearCartRequestMessage(buyer_id=buyer_id)
+    response = stub.ClearCart(request).msg
+    return response
+
 @app.route('/clearcart', methods = ['POST'])
 def handle_clear_cart():
     data = request.json
     buyer_id = data['buyer_id']
-    result = customers_db.clear_cart(buyer_id)
+    # result = customers_db.clear_cart(buyer_id)
+    result = clear_cart_with_grpc(buyer_id)
     if "Cart cleared" in result:
         return jsonify({"message": result}), 200
     else:
         return jsonify({"message": result}), 401
 
+def display_cart_with_grpc(buyer_id):
+    stub = get_customers_stub()
+    request = customers_pb2.DisplayCartRequestMessage(buyer_id=buyer_id)
+    response = stub.DisplayCart(request).msg
+    print(f"Display Cart response at grpc client: {response}")
+    return response
+
 @app.route('/displaycart', methods = ['GET'])
 def handle_display_cart():
     data = request.json
     buyer_id = data['buyer_id']
-    cart_items = customers_db.display_cart(buyer_id)
+    # cart_items = customers_db.display_cart(buyer_id)
+    cart_items = display_cart_with_grpc(buyer_id)
     if not cart_items:
         return jsonify({"message": "Your cart is empty"}), 200
     cart_display = []

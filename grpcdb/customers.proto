@@ -4,23 +4,23 @@ package customers;
 
 service Customers{
 
-
 rpc UpdateSellerFeedback(SellerFeedbackMessage) returns (generalResponse){}
 rpc GetUserDB(UserCredentialsMessage) returns (generalResponse){}
 rpc RegisterSellerDB(UserCredentialsMessage) returns (generalResponse){}
 
-rpc CreateAccount(CreateAccountMessage) returns (generalResponse){}
-rpc Login(LoginMessage) returns (generalResponse){}
-rpc SearchProduct(SearchProductMessage) returns (generalResponse){}
-rpc AddToCart(AddToCartMessage) returns (generalResponse){}
-rpc RemoveFromCart(RemoveFromCartMessage) returns (generalResponse){}
-rpc ClearCart(ClearCartMessage) returns (generalResponse){}
-rpc DisplayCart(DisplayCartMessage) returns (generalResponse){}
+rpc CreateAccount(CreateAccountRequestMessage) returns (generalResponse){}
+rpc Login(LoginRequestMessage) returns (generalResponse){}
+rpc AddToCart(AddToCartRequestMessage) returns (generalResponse){}
+rpc RemoveItemFromCart(RemoveFromCartRequestMessage) returns (generalResponse){}
+rpc ClearCart(ClearCartRequestMessage) returns (generalResponse){}
+rpc DisplayCart(DisplayCartRequestMessage) returns (generalResponse){}
 rpc MakePurchase(MakePurchaseMessage) returns (generalResponse){}
 rpc PurchaseHistory(PurchaseHistoryMessage) returns (generalResponse){}
 rpc ProvideFeedback(ProvideFeedbackMessage) returns (generalResponse){}
 rpc GetSellerRating(GetSellerRatingMessage) returns (generalResponse){}
 rpc Logout(LogoutMessage) returns (generalResponse){}
+rpc GetBuyerId(GetBuyerIdRequestMessage) returns (GetBuyerIdResponseMessage){}
+rpc SetLoginState(SetLoginStateRequestMessage) returns (generalResponse){}
 
 }
 
@@ -29,13 +29,13 @@ message generalResponse{
     string msg=1;
 }
 
-message CreateAccountMessage{
+message CreateAccountRequestMessage{
   string username = 1;
   string password = 2;
   string name = 3;
 }
 
-message LoginMessage{
+message LoginRequestMessage{
   string username = 1;
   string password = 2;
 }
@@ -45,23 +45,23 @@ message SearchProductMessage{
     string keywords = 2;
 }
 
-message AddToCartMessage{
+message AddToCartRequestMessage{
   int32 buyer_id = 1;
   int32 product_id = 2;
   int32 quantity = 3;
 }
 
-message RemoveFromCartMessage{
+message RemoveFromCartRequestMessage{
   int32 buyer_id = 1;
   int32 product_id = 2;
   int32 quantity = 3;
 }
 
-message ClearCartMessage{
+message ClearCartRequestMessage{
     int32 buyer_id = 1;
 }
 
-message DisplayCartMessage{
+message DisplayCartRequestMessage{
     int32 buyer_id = 1;
 }
 
@@ -88,6 +88,18 @@ message LogoutMessage{
     int32 buyer_id = 1;
 }
 
+message GetBuyerIdRequestMessage{
+    string username = 1;
+}
+
+message GetBuyerIdResponseMessage{
+    int32 buyer_id = 1;
+}
+
+message SetLoginStateRequestMessage{
+  int32 buyer_id = 1; 
+  bool state = 2;
+}
 // *********************************
 // SELLER: Assignment 4 updates
 //**********************************
