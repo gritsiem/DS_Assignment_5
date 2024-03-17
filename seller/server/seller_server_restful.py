@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify, redirect
 from seller import SellerPortal
+import sys
+
 app = Flask(__name__)
 
 portal = SellerPortal()
@@ -67,4 +69,9 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    if(len(sys.argv)==2):
+        app.run(host= sys.argv[1],debug=True)
+    elif (len(sys.argv)==3):
+        app.run(host= sys.argv[1],port=int(sys.argv[2]),debug=True)
+    else:
+        app.run(host="0.0.0.0",debug=True)
