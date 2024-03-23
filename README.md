@@ -11,6 +11,8 @@ There are 7 components:
 - 2 REST servers: Seller and Buyer 
 
     There are 4 replicas of each seller and buyer server. These are stateless servers, therefore we do not manage their replication. We just make sure that the clients randomly connect to only one of these servers.
+
+    Servers will keep restarting if they crash. Client will reconnect to a different server in case it faces a connection error.  
 - 2 GRPC exposed PostgreSQL DBs: Customers and Products
   Both the Customers and Products DB have 5 replicas
 - A mock payment SOAP server

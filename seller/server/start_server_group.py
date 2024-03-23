@@ -1,5 +1,5 @@
-import argparse
 import threading
+import subprocess
 import os
 from dotenv import load_dotenv
 
@@ -9,10 +9,16 @@ SELLER_IPS = os.getenv('SELLER_SERVERS').strip().split("\n")
         
 
 def start_group(ip):
-    # print("Server started on: ", i)
-    host,port = ip.split(":")
     # os.system(f'start /wait cmd /K "python seller/seller_client {host} {port}".py')
-    os.system(f'cmd /K "python seller/server/seller_server_restful.py {host} {port}"')
+    # os.system(f'cmd /K "python seller/server/seller_server_restful.py {host} {port}"')
+    while True:
+        try:
+            host,port = ip.split(":")
+            cmd = f"python seller/server/seller_server_restful.py {host} {port}".split()
+            subprocess.run(cmd, check = True, shell=True)
+        except Exception as e: # except subprocess.CalledProcessError:
+            print (f"[{ip}]: ERROR -- ", e)
+            print("Restarting server...")
 
 if __name__ == "__main__":
 

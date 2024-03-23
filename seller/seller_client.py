@@ -18,7 +18,8 @@ class Client():
     __servers = os.getenv('SELLER_SERVERS').strip().split("\n")
         
     def __init__(self):
-        self.__home = "http://"+ random.choice(Client.__servers)
+        self.__server = random.choice(Client.__servers)
+        self.__home = "http://"+ self.__server
         print("Connecting to ", self.__home)
         self.__URLS= {'home':self.__home,
             'login': self.__home+'/login',
@@ -27,6 +28,7 @@ class Client():
             'ratings': self.__home+'/ratings',         
             'logout': self.__home+'/logout',         
         }
+
         self.__current_function = None
         self.__ERRORS={
             'BAD_CHOICE': "Please choose one of the given options"
@@ -253,12 +255,32 @@ class Client():
     def printError(self):
         print(self.currentError)
 
+    def updateServer(self):
+        newserver = Client.__servers[:]
+        newserver.remove(self.__server)
+        newip = random.choice(newserver)
+        self.__home = "http://"+ newip
+
+        self.__URLS= {'home':self.__home,
+            'login': self.__home+'/login',
+            'register': self.__home+'/register',
+            'products': self.__home+'/products',   
+            'ratings': self.__home+'/ratings',         
+            'logout': self.__home+'/logout',         
+        }
+        self.__current_function = None
+
+        print("Now connected to :", newip)
+    
     def handleSession(self):
         while self.active:
-            
-            # self.inactivityThread.
-            # thread.start()
-            response = self.sendRequest()
+            try:
+                response = self.sendRequest()
+            except  requests.ConnectionError:
+                self.updateServer()
+                continue
+
+            # print("after")
             if type(response) is str:
                 print(response)
             else:
