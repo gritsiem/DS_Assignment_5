@@ -15,8 +15,11 @@ There are 7 components:
   Both the Customers and Products DB have 5 replicas
 - A mock payment SOAP server
 
+Each client is connected to a server by randomly picking one of the available servers. All the buyer servers are connected to the SOAP server.  
+
 ### Database Group Communication
 For Customer Database, rotating sequencer atomic broadcast protocol is used for the group communication. 
+
 For Products Database, PySyncObj is used for the group communication. PySyncObj is one of the open-source implementation of the Raft in Python.  
 #### Assumptions
 
