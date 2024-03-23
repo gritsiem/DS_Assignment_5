@@ -44,6 +44,11 @@ class ProductsStub(object):
                 request_serializer=products__pb2.SearchProductsRequestMessage.SerializeToString,
                 response_deserializer=products__pb2.SearchProductsResponseMessage.FromString,
                 )
+        self.GetProductDetails = channel.unary_unary(
+                '/products.Products/GetProductDetails',
+                request_serializer=products__pb2.GetProductDetailsRequestMessage.SerializeToString,
+                response_deserializer=products__pb2.GetProductDetailsResponseMessage.FromString,
+                )
 
 
 class ProductsServicer(object):
@@ -85,6 +90,12 @@ class ProductsServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetProductDetails(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ProductsServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -117,6 +128,11 @@ def add_ProductsServicer_to_server(servicer, server):
                     servicer.SearchProduct,
                     request_deserializer=products__pb2.SearchProductsRequestMessage.FromString,
                     response_serializer=products__pb2.SearchProductsResponseMessage.SerializeToString,
+            ),
+            'GetProductDetails': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetProductDetails,
+                    request_deserializer=products__pb2.GetProductDetailsRequestMessage.FromString,
+                    response_serializer=products__pb2.GetProductDetailsResponseMessage.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -227,5 +243,22 @@ class Products(object):
         return grpc.experimental.unary_unary(request, target, '/products.Products/SearchProduct',
             products__pb2.SearchProductsRequestMessage.SerializeToString,
             products__pb2.SearchProductsResponseMessage.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetProductDetails(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/products.Products/GetProductDetails',
+            products__pb2.GetProductDetailsRequestMessage.SerializeToString,
+            products__pb2.GetProductDetailsResponseMessage.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

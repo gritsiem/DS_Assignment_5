@@ -57,7 +57,7 @@ class CustomersStub(object):
         self.DisplayCart = channel.unary_unary(
                 '/customers.Customers/DisplayCart',
                 request_serializer=customers__pb2.DisplayCartRequestMessage.SerializeToString,
-                response_deserializer=customers__pb2.generalResponse.FromString,
+                response_deserializer=customers__pb2.DisplayCartResponseMessage.FromString,
                 )
         self.MakePurchase = channel.unary_unary(
                 '/customers.Customers/MakePurchase',
@@ -241,7 +241,7 @@ def add_CustomersServicer_to_server(servicer, server):
             'DisplayCart': grpc.unary_unary_rpc_method_handler(
                     servicer.DisplayCart,
                     request_deserializer=customers__pb2.DisplayCartRequestMessage.FromString,
-                    response_serializer=customers__pb2.generalResponse.SerializeToString,
+                    response_serializer=customers__pb2.DisplayCartResponseMessage.SerializeToString,
             ),
             'MakePurchase': grpc.unary_unary_rpc_method_handler(
                     servicer.MakePurchase,
@@ -437,7 +437,7 @@ class Customers(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/customers.Customers/DisplayCart',
             customers__pb2.DisplayCartRequestMessage.SerializeToString,
-            customers__pb2.generalResponse.FromString,
+            customers__pb2.DisplayCartResponseMessage.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

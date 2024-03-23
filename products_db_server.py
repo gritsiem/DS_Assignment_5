@@ -26,7 +26,12 @@ class ProductsDbService(products_pb2_grpc.ProductsServicer):
             )
         )
         return products_pb2.SearchProductsResponseMessage(products = products_list)
-
+    
+    def GetProductDetails(self, request, context):
+        product_id = request.product_id
+        response = products_db.get_product_details(product_id)
+        print(f"Search response at grpc server: {response}")
+        
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=20))
     products_pb2_grpc.add_ProductsServicer_to_server(ProductsDbService(), server)

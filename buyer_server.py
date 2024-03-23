@@ -84,7 +84,6 @@ def search_product_with_grpc(item_category, keywords):
     stub = get_products_stub()
     request = products_pb2.SearchProductsRequestMessage(item_category=item_category, keywords= keywords)
     response = stub.SearchProduct(request)
-    print(f"Search response at grpc client: {response}")
     return response
 
 @app.route('/search', methods = ['POST'])
@@ -94,15 +93,25 @@ def handle_search():
     item_category = data['item_category']
     keywords = data['keywords']
     print(f"Keywords in server: {keywords}")
-    # result = products_db.search_products(item_category, [keywords])
     result = search_product_with_grpc(item_category, [keywords])
     print(f"Search Result at server: {result}")
-    # header = "Id Name Condition Sale_price Quantity"
-    # formatted_results = "\n".join([header] + [f"{product[0]} {product[1]} {product[5]} {product[6]} {product[7]}" for product in result])
-    # print(f"Formatted results: {formatted_results}")
-    # return jsonify({"message": formatted_results}), 200
-    # return jsonify(json.dumps({"products": result}, indent=4)), 200
-    return jsonify(json.dumps(json.loads(result), indent=4))
+    products_list = []
+    for product in result.products:
+        keywords_list = list(product.keywords)
+        product_dict = {
+            "id": product.id,
+            "item_name": product.item_name,
+            "seller_id": product.seller_id,
+            "keywords": keywords_list, 
+            "condition": product.condition,
+            "sale_price": product.sale_price,
+            "quantity": product.quantity,
+            "thumbs_up_count": product.thumbs_up_count,
+            "thumbs_down_count": product.thumbs_down_count
+        }
+        products_list.append(product_dict)
+    
+    return jsonify(products_list)
 
 def add_to_cart_with_grpc(buyer_id, product_id, quantity):
     stub = get_customers_stub()
@@ -162,24 +171,35 @@ def handle_clear_cart():
 def display_cart_with_grpc(buyer_id):
     stub = get_customers_stub()
     request = customers_pb2.DisplayCartRequestMessage(buyer_id=buyer_id)
-    response = stub.DisplayCart(request).msg
+    response = stub.DisplayCart(request)
     print(f"Display Cart response at grpc client: {response}")
-    return response
+    return [(item.product_id, item.quantity) for item in response.cart_items]
+
+def get_product_details_with_grpc(product_id):
+    stub = get_products_stub()
+    request = products_pb2.GetProductDetailsRequestMessage(product_id = product_id)
+    response = stub.GetProductDetails(request)
+    if response:  
+        return {
+            "name": response.name,
+            "price": response.sale_price
+        }
+    return None
 
 @app.route('/displaycart', methods = ['GET'])
 def handle_display_cart():
     data = request.json
     buyer_id = data['buyer_id']
     # cart_items = customers_db.display_cart(buyer_id)
-    cart_items = display_cart_with_grpc(buyer_id)
-    if not cart_items:
+    response = display_cart_with_grpc(buyer_id)
+    if not response:
         return jsonify({"message": "Your cart is empty"}), 200
     cart_display = []
     for product_id, quantity in cart_items:
-        product_detail = products_db.get_product_details(product_id)
+        product_detail = get_product_details_with_grpc(product_id)
         if product_detail:
-            item_name = product_detail[product_id]['name']
-            sale_price = product_detail[product_id]['price']
+            item_name = product_detail['name']
+            sale_price = product_detail['price']
             cart_display.append(f"Product: {item_name}, Quantity: {quantity}, Unit Price: {sale_price}, Total price: {sale_price*quantity}")
     formatted_cart = "\n".join(f"{index + 1}. {item}" for index, item in enumerate(cart_display))
     if formatted_cart:

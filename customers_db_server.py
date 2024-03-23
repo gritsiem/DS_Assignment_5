@@ -55,7 +55,13 @@ class CustomersDbService(customers_pb2_grpc.CustomersServicer):
         buyer_id = request.buyer_id
         response = customers_db.display_cart(buyer_id)
         print(f"Display Cart Response at gRPC server: {response}")
-        return customers_pb2.generalResponse(msg = response)
+        cart_items_list = []
+        for cart_item in response:
+            cart_items_list.append(customers_pb2.CartItem(product_id=cart_item[0],
+                quantity=cart_item[1]
+            )
+        )
+        return customers_pb2.DisplayCartResponseMessage(cart_items = cart_items_list)
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=20))
