@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, redirect
 from seller import SellerPortal
 import sys
 
+IP = ""
 app = Flask(__name__)
 
 portal = SellerPortal()
@@ -72,6 +73,7 @@ if __name__ == '__main__':
     if(len(sys.argv)==2):
         app.run(host= sys.argv[1],debug=True)
     elif (len(sys.argv)==3):
+        IP = sys.argv[1]+":"+sys.argv[2]
         app.run(host= sys.argv[1],port=int(sys.argv[2]),debug=True)
     else:
         app.run(host="0.0.0.0",debug=True)
