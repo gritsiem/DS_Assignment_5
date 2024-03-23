@@ -11,6 +11,8 @@ rpc RemoveSellerProduct(ProductItemMessage) returns (generalResponse){}
 rpc GetSellerRatings(ProductItemMessage) returns (generalResponse){}
 
 rpc SearchProduct(SearchProductsRequestMessage) returns (SearchProductsResponseMessage){}
+rpc GetProductDetails(GetProductDetailsRequestMessage) returns (GetProductDetailsResponseMessage){}
+
 }
 
 message ProductItemMessage{
@@ -51,4 +53,13 @@ message Product {
 
 message SearchProductsResponseMessage {
   repeated Product products = 1;
+}
+
+message GetProductDetailsRequestMessage {
+  int32 product_id = 1;
+}
+
+message GetProductDetailsResponseMessage{
+    string item_name = 1;
+    string sale_price = 2;
 }
