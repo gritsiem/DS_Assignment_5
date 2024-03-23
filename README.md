@@ -12,7 +12,13 @@ There are 7 components:
 
     There are 4 replicas of each seller and buyer server. These are stateless servers, therefore we do not manage their replication. We just make sure that the clients randomly connect to only one of these servers.
 - 2 GRPC exposed PostgreSQL DBs: Customers and Products
+  Both the Customers and Products DB have 5 replicas
 - A mock payment SOAP server
+
+### Database Group Communication
+For Customer Database, rotating sequencer atomic broadcast protocol is used for the group communication. 
+For Products Database, PySyncObj is used for the group communication. PySyncObj is one of the open-source implementation of the Raft in Python.  
+#### Assumptions
 
 ## How to Set Up 
 ### Local setup (have one machine for all components)
