@@ -14,33 +14,47 @@ class Types:
     sequence = "SEQUENCE_MSG"
     retransmit = "RETRANSMIT"
 
+class Request:
+    def __init__(self, method_name:str, args: dict) -> None:
+        self.method = method_name
+        self.args = args
+
 class SequenceMsg:
     def __init__(self, gid, reqid, aru):
         self.gid = gid
         self.reqid = reqid
         self.aru = []
 
+class RequestMsg:
+    def __init__(self, pid, lsn, req: Request):
+        self.id = (pid,lsn)
+        self.request = req
+        self.metadata = None
+
 class Member:
+
+    nmembers = 0
+    nextk = -1
     pid = -1
     lsn = -1
     aru = [-1,-1,-1,-1,-1]
     my_aru = -1 # used to keep track of request messages received upto global_id aru  
-    highestexecuted = -1
-    missing = []
-    request_hist = {0:[[],[]],1:[[],[]],2: [[],[]],3: [[],[]],4: [[],[]]}
-    sequence_hist = {}
 
-    # messages to retransmit
-    wait_q = {"req":{},"seq":[]}
+    # gid to request id
+    seq_to_reqid= {}
 
-    # have mapping of request ids to sequence message and vice versa
-    seq_to_req= {}
-    req_to_seq= {}
+    # pid to dictionary of lsn:req
+    request_hist = {0:{},1:{},2: {},3: {},4: {}}
+
     helper = None
     my_turn = False
     execute_q = {}
 
-
+    #unsure 
+    missing = []
+    sequence_hist = {}
+    highestexecuted = -1
+    wait_q = {"req":{},"seq":[]} # messages to retransmit
 
     def __init__(self, addr, pid):
         self.host, port = addr.split(":")
@@ -50,8 +64,8 @@ class Member:
         self.__members = os.getenv('CUSTOMER_SERVERS').strip().split("\n")
         Member.nmembers = len(self.__members)
         self.__members = [ ((mem.split("-")[1]).split(":")[0],int((mem.split("-")[1]).split(":")[1])+1) for mem in self.__members]
-
         self.initiate_UDP()
+        
         Member.pid = int(pid)
         Member.nextk = Member.pid%Member.nmembers
         if Member.pid == 0:
@@ -79,13 +93,15 @@ class Member:
             self.skt.sendto(pickle.dumps(msg),mem)
 
     
-    def send_request_msg(self,request):
+    def send_request_msg(self, request: Request):
         Member.lsn+=1
-        data = {"header":(Member.pid, Member.lsn), "call":request}
-        msg = self.create_msg(Types.request, data)
-        Member.request_hist[Member.pid][0]+=[Member.lsn]
-        Member.request_hist[Member.pid][1]+=[data["call"]]
+
+        new_request = RequestMsg( Member.pid, Member.lsn, request)
+        msg = self.create_msg(Types.request, new_request)
+        Member.request_hist[Member.pid][Member.lsn] = request
         self.broadcast(msg)
+
+        return Member.lsn
 
     def status(self):
         print("Me aru = ", Member.my_aru)
@@ -99,10 +115,9 @@ class Member:
         while True:
             data, addr = self.skt.recvfrom(2048)
             msg = pickle.loads(data)
-            print(msg)
+            print("New group message: ",msg)
             self.status()
             if msg["type"] == Types.request:
-                print("Message gateway: ",msg)
                 self.handleRequestMsg(msg["payload"])
             elif msg["type"] == Types.sequence:
                 self.handleSequenceMsg(msg["payload"])
@@ -117,11 +132,12 @@ class Member:
         return { "type": type, "payload":payload}
     
 
-    def handleSequenceMsg(self, data):
-        gid = data["gid"] 
-        # data will have global id, and request id 
+    def handleSequenceMsg(self, msg: SequenceMsg):
+        gid = msg.gid
+        # msg will have global id, and request id 
         # Member.sequence_hist += [gid]
-        Member.sequence_hist[gid]= data["request_id"]
+        
+        Member.sequence_hist[gid]= msg.reqid
         print("updated received sequences: ", Member.sequence_hist)
         # be prepared to send the next Sequence message
         if gid == Member.nextk-1:
@@ -143,8 +159,8 @@ class Member:
                 #send retransmit
                 # self.handleRetransmit(type,list(waitlist.keys()))
 
-        pid,lsn = data["request_id"]
-        if lsn in Member.request_hist[pid][0]:
+        pid,lsn = msg.reqid
+        if lsn in Member.request_hist[pid].keys():
             if Member.my_aru == gid-1:
                 Member.my_aru = gid
             i = Member.request_hist[pid][0].index(lsn)
@@ -155,8 +171,8 @@ class Member:
             self.handleExecute()
     
         else:
-            data = {"type": Types.request, "request_id":(pid, lsn)}
-            msg = self.create_msg(Types.retransmit, data)
+            msg = {"type": Types.request, "request_id":(pid, lsn)}
+            msg = self.create_msg(Types.retransmit, msg)
             Member.request_hist[Member.pid][0]+=[Member.lsn]
             Member.request_hist[Member.pid][1]+=[msg]
             self.broadcast(msg)
@@ -168,16 +184,32 @@ class Member:
         print("Execute queue sorted: ",Member.execute_q)
         for gid in Member.execute_q:
             call = Member.execute_q[gid]
-            print
             Member.helper.by_name(call["method"], call["args"])
                 
           
+    def checkTurn(self, req_id):
+        if Member.my_aru!=Member.nextk-1:
+            return False, None
+        
+        for gid in range(Member.nextk):
+            pid,lsn = Member.seq_to_reqid[gid]
+            if not (Member.req_mapping[pid])[lsn]:
+                return False, None
+        
+        # naive way to check if all the lsns for pid have been received.
+        for lsn in range(req_id[1]):
+            lsns_received = Member.req_mapping[req_id[0]].keys()
+            if lsn not in lsns_received:
+                return False, None
+
+        return True, None
     
-    def handleRequestMsg(self, msg):
-        pid, lsn = msg["header"]
+    def handleRequestMsg(self, msg:RequestMsg):
+        pid, lsn = msg.id
         pid = int(pid)
         request_id = (pid,lsn)
         print(pid, type(pid),lsn,type(lsn))
+
         # Part 1 -- check for sequence message
 
         # #check if you have a sqn msg with associated request id
@@ -198,20 +230,34 @@ class Member:
 
         # Part 2 -- check if you need to send a sequence message
             
-        # If all gids uptil k are in the queue
-        if Member.my_turn: # my_turn is set to true if you have received all pairs of sequence+request messages
-            if self.check_pid(pid,lsn):
-                aru = Member.aru
-                aru[Member.pid] = Member.my_aru
-                seqmsg = {"gid":Member.nextk,"request_id":msg["header"], "aru" :aru}
-                seqmsg = self.create_msg(Types.sequence, seqmsg)
-                self.broadcast(seqmsg)
+        # If it's my turn for creating request message -- 
+        # check all three conditions to create a sequence message until satisfied or do retransmit.
+        if Member.nextk%Member.nmembers == Member.pid:
+            ready_generate_seq_msg = False
+            while not ready_generate_seq_msg:
+                ready_generate_seq_msg, action = self.checkTurn(msg.id)
+            
+            # once all conditions are satisfied -- 
+            aru = Member.aru
+            aru[Member.pid] = Member.my_aru # update metadata
 
-        # common actions
+            # create sequence message
+            seqmsg = SequenceMsg(gid=Member.nextk, reqid=msg.id,aru=aru)
+            seqmsg = self.create_msg(Types.sequence, seqmsg)
+            self.broadcast(seqmsg)
+
+            # debug
+            print("*****************************")
+            print("SQN MSG SENT: ", seqmsg)
+            print("*****************************")
+            # update nextk to next value
+            Member.nextk = Member.nextk + Member.nmembers
+
+        # common action
         if pid!=Member.pid:
-            Member.request_hist[pid][0].append(lsn)
-            Member.request_hist[pid][1].append(msg["call"])
-        print("updated requests",Member.request_hist)
+            (Member.request_hist[pid])[lsn]= msg.request
+
+        print("Updated Requests History")
 
 
     
@@ -238,7 +284,7 @@ class Member:
         if msg["type"] == Types.request:
             pid,lsn = msg["request_id"]
             if pid==Member.pid:
-                if lsn in Member.request_hist[pid][0]:
+                if lsn in Member.request_hist[pid]:
                     i = Member.request_hist[pid][0].index(lsn)
                     if i>-1:
                         request = Member.request_hist[pid][1][i]

@@ -19,215 +19,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0f\x63ustomers.proto\x12\tcustomers\"D\n\rInsertMessage\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x02 \x01(\t\x12\x0e\n\x06values\x18\x03 \x01(\t\"r\n\rUpdateMessage\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x02 \x01(\t\x12\x0e\n\x06values\x18\x03 \x01(\t\x12\x15\n\rcondition_col\x18\x04 \x01(\t\x12\x15\n\rcondition_val\x18\x05 \x01(\x05\"L\n\x10SelectOneMessage\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x0e\n\x06\x63olumn\x18\x02 \x01(\t\x12\x14\n\x0csearch_value\x18\x03 \x01(\t\"i\n\x11SelectManyMessage\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x02 \x01(\t\x12\x15\n\rsearch_values\x18\x03 \x01(\t\x12\x18\n\x10selected_columns\x18\x04 \x01(\t\"\x1e\n\x0fgeneralResponse\x12\x0b\n\x03msg\x18\x01 \x01(\t\"H\n\x14\x43reateAccountMessage\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\"2\n\x0cLoginMessage\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"?\n\x14SearchProductMessage\x12\x15\n\ritem_category\x18\x01 \x01(\x05\x12\x10\n\x08keywords\x18\x02 \x01(\t\"J\n\x10\x41\x64\x64ToCartMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\x12\x12\n\nproduct_id\x18\x02 \x01(\x05\x12\x10\n\x08quantity\x18\x03 \x01(\x05\"O\n\x15RemoveFromCartMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\x12\x12\n\nproduct_id\x18\x02 \x01(\x05\x12\x10\n\x08quantity\x18\x03 \x01(\x05\"$\n\x10\x43learCartMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\"&\n\x12\x44isplayCartMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\"<\n\x13MakePurchaseMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\x12\x13\n\x0b\x63redit_card\x18\x02 \x01(\t\"*\n\x16PurchaseHistoryMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\"U\n\x16ProvideFeedbackMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\x12\x12\n\nproduct_id\x18\x02 \x01(\x05\x12\x15\n\rfeedback_type\x18\x03 \x01(\t\"+\n\x16GetSellerRatingMessage\x12\x11\n\tseller_id\x18\x01 \x01(\x05\"!\n\rLogoutMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\"N\n\x16UserCredentialsMessage\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x15\n\x08password\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x0b\n\t_password\"B\n\x15SellerFeedbackMessage\x12\x11\n\tseller_id\x18\x01 \x01(\x05\x12\n\n\x02tu\x18\x02 \x01(\x05\x12\n\n\x02td\x18\x03 \x01(\x05\x32\xa0\t\n\tCustomers\x12V\n\x14UpdateSellerFeedback\x12 .customers.SellerFeedbackMessage\x1a\x1a.customers.generalResponse\"\x00\x12L\n\tGetUserDB\x12!.customers.UserCredentialsMessage\x1a\x1a.customers.generalResponse\"\x00\x12S\n\x10RegisterSellerDB\x12!.customers.UserCredentialsMessage\x1a\x1a.customers.generalResponse\"\x00\x12N\n\rCreateAccount\x12\x1f.customers.CreateAccountMessage\x1a\x1a.customers.generalResponse\"\x00\x12>\n\x05Login\x12\x17.customers.LoginMessage\x1a\x1a.customers.generalResponse\"\x00\x12N\n\rSearchProduct\x12\x1f.customers.SearchProductMessage\x1a\x1a.customers.generalResponse\"\x00\x12\x46\n\tAddToCart\x12\x1b.customers.AddToCartMessage\x1a\x1a.customers.generalResponse\"\x00\x12P\n\x0eRemoveFromCart\x12 .customers.RemoveFromCartMessage\x1a\x1a.customers.generalResponse\"\x00\x12\x46\n\tClearCart\x12\x1b.customers.ClearCartMessage\x1a\x1a.customers.generalResponse\"\x00\x12J\n\x0b\x44isplayCart\x12\x1d.customers.DisplayCartMessage\x1a\x1a.customers.generalResponse\"\x00\x12L\n\x0cMakePurchase\x12\x1e.customers.MakePurchaseMessage\x1a\x1a.customers.generalResponse\"\x00\x12R\n\x0fPurchaseHistory\x12!.customers.PurchaseHistoryMessage\x1a\x1a.customers.generalResponse\"\x00\x12R\n\x0fProvideFeedback\x12!.customers.ProvideFeedbackMessage\x1a\x1a.customers.generalResponse\"\x00\x12R\n\x0fGetSellerRating\x12!.customers.GetSellerRatingMessage\x1a\x1a.customers.generalResponse\"\x00\x12@\n\x06Logout\x12\x18.customers.LogoutMessage\x1a\x1a.customers.generalResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0f\x63ustomers.proto\x12\tcustomers\"\x1e\n\x0fgeneralResponse\x12\x0b\n\x03msg\x18\x01 \x01(\t\"O\n\x1b\x43reateAccountRequestMessage\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\"9\n\x13LoginRequestMessage\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"?\n\x14SearchProductMessage\x12\x15\n\ritem_category\x18\x01 \x01(\x05\x12\x10\n\x08keywords\x18\x02 \x01(\t\"Q\n\x17\x41\x64\x64ToCartRequestMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\x12\x12\n\nproduct_id\x18\x02 \x01(\x05\x12\x10\n\x08quantity\x18\x03 \x01(\x05\"V\n\x1cRemoveFromCartRequestMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\x12\x12\n\nproduct_id\x18\x02 \x01(\x05\x12\x10\n\x08quantity\x18\x03 \x01(\x05\"+\n\x17\x43learCartRequestMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\"-\n\x19\x44isplayCartRequestMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\"<\n\x13MakePurchaseMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\x12\x13\n\x0b\x63redit_card\x18\x02 \x01(\t\"*\n\x16PurchaseHistoryMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\"U\n\x16ProvideFeedbackMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\x12\x12\n\nproduct_id\x18\x02 \x01(\x05\x12\x15\n\rfeedback_type\x18\x03 \x01(\t\"+\n\x16GetSellerRatingMessage\x12\x11\n\tseller_id\x18\x01 \x01(\x05\"!\n\rLogoutMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\",\n\x18GetBuyerIdRequestMessage\x12\x10\n\x08username\x18\x01 \x01(\t\"-\n\x19GetBuyerIdResponseMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\">\n\x1bSetLoginStateRequestMessage\x12\x10\n\x08\x62uyer_id\x18\x01 \x01(\x05\x12\r\n\x05state\x18\x02 \x01(\x08\"0\n\x08\x43\x61rtItem\x12\x12\n\nproduct_id\x18\x01 \x01(\x05\x12\x10\n\x08quantity\x18\x08 \x01(\x05\"E\n\x1a\x44isplayCartResponseMessage\x12\'\n\ncart_items\x18\x01 \x03(\x0b\x32\x13.customers.CartItem\"N\n\x16UserCredentialsMessage\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x15\n\x08password\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x0b\n\t_password\"B\n\x15SellerFeedbackMessage\x12\x11\n\tseller_id\x18\x01 \x01(\x05\x12\n\n\x02tu\x18\x02 \x01(\x05\x12\n\n\x02td\x18\x03 \x01(\x05\x32\xbb\n\n\tCustomers\x12V\n\x14UpdateSellerFeedback\x12 .customers.SellerFeedbackMessage\x1a\x1a.customers.generalResponse\"\x00\x12L\n\tGetUserDB\x12!.customers.UserCredentialsMessage\x1a\x1a.customers.generalResponse\"\x00\x12S\n\x10RegisterSellerDB\x12!.customers.UserCredentialsMessage\x1a\x1a.customers.generalResponse\"\x00\x12U\n\rCreateAccount\x12&.customers.CreateAccountRequestMessage\x1a\x1a.customers.generalResponse\"\x00\x12\x45\n\x05Login\x12\x1e.customers.LoginRequestMessage\x1a\x1a.customers.generalResponse\"\x00\x12M\n\tAddToCart\x12\".customers.AddToCartRequestMessage\x1a\x1a.customers.generalResponse\"\x00\x12[\n\x12RemoveItemFromCart\x12\'.customers.RemoveFromCartRequestMessage\x1a\x1a.customers.generalResponse\"\x00\x12M\n\tClearCart\x12\".customers.ClearCartRequestMessage\x1a\x1a.customers.generalResponse\"\x00\x12\\\n\x0b\x44isplayCart\x12$.customers.DisplayCartRequestMessage\x1a%.customers.DisplayCartResponseMessage\"\x00\x12L\n\x0cMakePurchase\x12\x1e.customers.MakePurchaseMessage\x1a\x1a.customers.generalResponse\"\x00\x12R\n\x0fPurchaseHistory\x12!.customers.PurchaseHistoryMessage\x1a\x1a.customers.generalResponse\"\x00\x12R\n\x0fProvideFeedback\x12!.customers.ProvideFeedbackMessage\x1a\x1a.customers.generalResponse\"\x00\x12R\n\x0fGetSellerRating\x12!.customers.GetSellerRatingMessage\x1a\x1a.customers.generalResponse\"\x00\x12@\n\x06Logout\x12\x18.customers.LogoutMessage\x1a\x1a.customers.generalResponse\"\x00\x12Y\n\nGetBuyerId\x12#.customers.GetBuyerIdRequestMessage\x1a$.customers.GetBuyerIdResponseMessage\"\x00\x12U\n\rSetLoginState\x12&.customers.SetLoginStateRequestMessage\x1a\x1a.customers.generalResponse\"\x00\x62\x06proto3'
 )
 
 
-
-
-_INSERTMESSAGE = _descriptor.Descriptor(
-  name='InsertMessage',
-  full_name='customers.InsertMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='customers.InsertMessage.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='columns', full_name='customers.InsertMessage.columns', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='values', full_name='customers.InsertMessage.values', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=30,
-  serialized_end=98,
-)
-
-
-_UPDATEMESSAGE = _descriptor.Descriptor(
-  name='UpdateMessage',
-  full_name='customers.UpdateMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='customers.UpdateMessage.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='columns', full_name='customers.UpdateMessage.columns', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='values', full_name='customers.UpdateMessage.values', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='condition_col', full_name='customers.UpdateMessage.condition_col', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='condition_val', full_name='customers.UpdateMessage.condition_val', index=4,
-      number=5, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=100,
-  serialized_end=214,
-)
-
-
-_SELECTONEMESSAGE = _descriptor.Descriptor(
-  name='SelectOneMessage',
-  full_name='customers.SelectOneMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='customers.SelectOneMessage.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='column', full_name='customers.SelectOneMessage.column', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='search_value', full_name='customers.SelectOneMessage.search_value', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=216,
-  serialized_end=292,
-)
-
-
-_SELECTMANYMESSAGE = _descriptor.Descriptor(
-  name='SelectManyMessage',
-  full_name='customers.SelectManyMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='customers.SelectManyMessage.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='columns', full_name='customers.SelectManyMessage.columns', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='search_values', full_name='customers.SelectManyMessage.search_values', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='selected_columns', full_name='customers.SelectManyMessage.selected_columns', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=294,
-  serialized_end=399,
-)
 
 
 _GENERALRESPONSE = _descriptor.Descriptor(
@@ -257,35 +52,35 @@ _GENERALRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=401,
-  serialized_end=431,
+  serialized_start=30,
+  serialized_end=60,
 )
 
 
-_CREATEACCOUNTMESSAGE = _descriptor.Descriptor(
-  name='CreateAccountMessage',
-  full_name='customers.CreateAccountMessage',
+_CREATEACCOUNTREQUESTMESSAGE = _descriptor.Descriptor(
+  name='CreateAccountRequestMessage',
+  full_name='customers.CreateAccountRequestMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='username', full_name='customers.CreateAccountMessage.username', index=0,
+      name='username', full_name='customers.CreateAccountRequestMessage.username', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='password', full_name='customers.CreateAccountMessage.password', index=1,
+      name='password', full_name='customers.CreateAccountRequestMessage.password', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='customers.CreateAccountMessage.name', index=2,
+      name='name', full_name='customers.CreateAccountRequestMessage.name', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -303,28 +98,28 @@ _CREATEACCOUNTMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=433,
-  serialized_end=505,
+  serialized_start=62,
+  serialized_end=141,
 )
 
 
-_LOGINMESSAGE = _descriptor.Descriptor(
-  name='LoginMessage',
-  full_name='customers.LoginMessage',
+_LOGINREQUESTMESSAGE = _descriptor.Descriptor(
+  name='LoginRequestMessage',
+  full_name='customers.LoginRequestMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='username', full_name='customers.LoginMessage.username', index=0,
+      name='username', full_name='customers.LoginRequestMessage.username', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='password', full_name='customers.LoginMessage.password', index=1,
+      name='password', full_name='customers.LoginRequestMessage.password', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -342,8 +137,8 @@ _LOGINMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=507,
-  serialized_end=557,
+  serialized_start=143,
+  serialized_end=200,
 )
 
 
@@ -381,35 +176,35 @@ _SEARCHPRODUCTMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=559,
-  serialized_end=622,
+  serialized_start=202,
+  serialized_end=265,
 )
 
 
-_ADDTOCARTMESSAGE = _descriptor.Descriptor(
-  name='AddToCartMessage',
-  full_name='customers.AddToCartMessage',
+_ADDTOCARTREQUESTMESSAGE = _descriptor.Descriptor(
+  name='AddToCartRequestMessage',
+  full_name='customers.AddToCartRequestMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='buyer_id', full_name='customers.AddToCartMessage.buyer_id', index=0,
+      name='buyer_id', full_name='customers.AddToCartRequestMessage.buyer_id', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='product_id', full_name='customers.AddToCartMessage.product_id', index=1,
+      name='product_id', full_name='customers.AddToCartRequestMessage.product_id', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='quantity', full_name='customers.AddToCartMessage.quantity', index=2,
+      name='quantity', full_name='customers.AddToCartRequestMessage.quantity', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -427,35 +222,35 @@ _ADDTOCARTMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=624,
-  serialized_end=698,
+  serialized_start=267,
+  serialized_end=348,
 )
 
 
-_REMOVEFROMCARTMESSAGE = _descriptor.Descriptor(
-  name='RemoveFromCartMessage',
-  full_name='customers.RemoveFromCartMessage',
+_REMOVEFROMCARTREQUESTMESSAGE = _descriptor.Descriptor(
+  name='RemoveFromCartRequestMessage',
+  full_name='customers.RemoveFromCartRequestMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='buyer_id', full_name='customers.RemoveFromCartMessage.buyer_id', index=0,
+      name='buyer_id', full_name='customers.RemoveFromCartRequestMessage.buyer_id', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='product_id', full_name='customers.RemoveFromCartMessage.product_id', index=1,
+      name='product_id', full_name='customers.RemoveFromCartRequestMessage.product_id', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='quantity', full_name='customers.RemoveFromCartMessage.quantity', index=2,
+      name='quantity', full_name='customers.RemoveFromCartRequestMessage.quantity', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -473,21 +268,21 @@ _REMOVEFROMCARTMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=700,
-  serialized_end=779,
+  serialized_start=350,
+  serialized_end=436,
 )
 
 
-_CLEARCARTMESSAGE = _descriptor.Descriptor(
-  name='ClearCartMessage',
-  full_name='customers.ClearCartMessage',
+_CLEARCARTREQUESTMESSAGE = _descriptor.Descriptor(
+  name='ClearCartRequestMessage',
+  full_name='customers.ClearCartRequestMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='buyer_id', full_name='customers.ClearCartMessage.buyer_id', index=0,
+      name='buyer_id', full_name='customers.ClearCartRequestMessage.buyer_id', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -505,21 +300,21 @@ _CLEARCARTMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=781,
-  serialized_end=817,
+  serialized_start=438,
+  serialized_end=481,
 )
 
 
-_DISPLAYCARTMESSAGE = _descriptor.Descriptor(
-  name='DisplayCartMessage',
-  full_name='customers.DisplayCartMessage',
+_DISPLAYCARTREQUESTMESSAGE = _descriptor.Descriptor(
+  name='DisplayCartRequestMessage',
+  full_name='customers.DisplayCartRequestMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='buyer_id', full_name='customers.DisplayCartMessage.buyer_id', index=0,
+      name='buyer_id', full_name='customers.DisplayCartRequestMessage.buyer_id', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -537,8 +332,8 @@ _DISPLAYCARTMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=819,
-  serialized_end=857,
+  serialized_start=483,
+  serialized_end=528,
 )
 
 
@@ -576,8 +371,8 @@ _MAKEPURCHASEMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=859,
-  serialized_end=919,
+  serialized_start=530,
+  serialized_end=590,
 )
 
 
@@ -608,8 +403,8 @@ _PURCHASEHISTORYMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=921,
-  serialized_end=963,
+  serialized_start=592,
+  serialized_end=634,
 )
 
 
@@ -654,8 +449,8 @@ _PROVIDEFEEDBACKMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=965,
-  serialized_end=1050,
+  serialized_start=636,
+  serialized_end=721,
 )
 
 
@@ -686,8 +481,8 @@ _GETSELLERRATINGMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1052,
-  serialized_end=1095,
+  serialized_start=723,
+  serialized_end=766,
 )
 
 
@@ -718,8 +513,182 @@ _LOGOUTMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1097,
-  serialized_end=1130,
+  serialized_start=768,
+  serialized_end=801,
+)
+
+
+_GETBUYERIDREQUESTMESSAGE = _descriptor.Descriptor(
+  name='GetBuyerIdRequestMessage',
+  full_name='customers.GetBuyerIdRequestMessage',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='username', full_name='customers.GetBuyerIdRequestMessage.username', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=803,
+  serialized_end=847,
+)
+
+
+_GETBUYERIDRESPONSEMESSAGE = _descriptor.Descriptor(
+  name='GetBuyerIdResponseMessage',
+  full_name='customers.GetBuyerIdResponseMessage',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='buyer_id', full_name='customers.GetBuyerIdResponseMessage.buyer_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=849,
+  serialized_end=894,
+)
+
+
+_SETLOGINSTATEREQUESTMESSAGE = _descriptor.Descriptor(
+  name='SetLoginStateRequestMessage',
+  full_name='customers.SetLoginStateRequestMessage',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='buyer_id', full_name='customers.SetLoginStateRequestMessage.buyer_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='state', full_name='customers.SetLoginStateRequestMessage.state', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=896,
+  serialized_end=958,
+)
+
+
+_CARTITEM = _descriptor.Descriptor(
+  name='CartItem',
+  full_name='customers.CartItem',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='product_id', full_name='customers.CartItem.product_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='quantity', full_name='customers.CartItem.quantity', index=1,
+      number=8, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=960,
+  serialized_end=1008,
+)
+
+
+_DISPLAYCARTRESPONSEMESSAGE = _descriptor.Descriptor(
+  name='DisplayCartResponseMessage',
+  full_name='customers.DisplayCartResponseMessage',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='cart_items', full_name='customers.DisplayCartResponseMessage.cart_items', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1010,
+  serialized_end=1079,
 )
 
 
@@ -762,8 +731,8 @@ _USERCREDENTIALSMESSAGE = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=1132,
-  serialized_end=1210,
+  serialized_start=1081,
+  serialized_end=1159,
 )
 
 
@@ -808,61 +777,35 @@ _SELLERFEEDBACKMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1212,
-  serialized_end=1278,
+  serialized_start=1161,
+  serialized_end=1227,
 )
 
+_DISPLAYCARTRESPONSEMESSAGE.fields_by_name['cart_items'].message_type = _CARTITEM
 _USERCREDENTIALSMESSAGE.oneofs_by_name['_password'].fields.append(
   _USERCREDENTIALSMESSAGE.fields_by_name['password'])
 _USERCREDENTIALSMESSAGE.fields_by_name['password'].containing_oneof = _USERCREDENTIALSMESSAGE.oneofs_by_name['_password']
-DESCRIPTOR.message_types_by_name['InsertMessage'] = _INSERTMESSAGE
-DESCRIPTOR.message_types_by_name['UpdateMessage'] = _UPDATEMESSAGE
-DESCRIPTOR.message_types_by_name['SelectOneMessage'] = _SELECTONEMESSAGE
-DESCRIPTOR.message_types_by_name['SelectManyMessage'] = _SELECTMANYMESSAGE
 DESCRIPTOR.message_types_by_name['generalResponse'] = _GENERALRESPONSE
-DESCRIPTOR.message_types_by_name['CreateAccountMessage'] = _CREATEACCOUNTMESSAGE
-DESCRIPTOR.message_types_by_name['LoginMessage'] = _LOGINMESSAGE
+DESCRIPTOR.message_types_by_name['CreateAccountRequestMessage'] = _CREATEACCOUNTREQUESTMESSAGE
+DESCRIPTOR.message_types_by_name['LoginRequestMessage'] = _LOGINREQUESTMESSAGE
 DESCRIPTOR.message_types_by_name['SearchProductMessage'] = _SEARCHPRODUCTMESSAGE
-DESCRIPTOR.message_types_by_name['AddToCartMessage'] = _ADDTOCARTMESSAGE
-DESCRIPTOR.message_types_by_name['RemoveFromCartMessage'] = _REMOVEFROMCARTMESSAGE
-DESCRIPTOR.message_types_by_name['ClearCartMessage'] = _CLEARCARTMESSAGE
-DESCRIPTOR.message_types_by_name['DisplayCartMessage'] = _DISPLAYCARTMESSAGE
+DESCRIPTOR.message_types_by_name['AddToCartRequestMessage'] = _ADDTOCARTREQUESTMESSAGE
+DESCRIPTOR.message_types_by_name['RemoveFromCartRequestMessage'] = _REMOVEFROMCARTREQUESTMESSAGE
+DESCRIPTOR.message_types_by_name['ClearCartRequestMessage'] = _CLEARCARTREQUESTMESSAGE
+DESCRIPTOR.message_types_by_name['DisplayCartRequestMessage'] = _DISPLAYCARTREQUESTMESSAGE
 DESCRIPTOR.message_types_by_name['MakePurchaseMessage'] = _MAKEPURCHASEMESSAGE
 DESCRIPTOR.message_types_by_name['PurchaseHistoryMessage'] = _PURCHASEHISTORYMESSAGE
 DESCRIPTOR.message_types_by_name['ProvideFeedbackMessage'] = _PROVIDEFEEDBACKMESSAGE
 DESCRIPTOR.message_types_by_name['GetSellerRatingMessage'] = _GETSELLERRATINGMESSAGE
 DESCRIPTOR.message_types_by_name['LogoutMessage'] = _LOGOUTMESSAGE
+DESCRIPTOR.message_types_by_name['GetBuyerIdRequestMessage'] = _GETBUYERIDREQUESTMESSAGE
+DESCRIPTOR.message_types_by_name['GetBuyerIdResponseMessage'] = _GETBUYERIDRESPONSEMESSAGE
+DESCRIPTOR.message_types_by_name['SetLoginStateRequestMessage'] = _SETLOGINSTATEREQUESTMESSAGE
+DESCRIPTOR.message_types_by_name['CartItem'] = _CARTITEM
+DESCRIPTOR.message_types_by_name['DisplayCartResponseMessage'] = _DISPLAYCARTRESPONSEMESSAGE
 DESCRIPTOR.message_types_by_name['UserCredentialsMessage'] = _USERCREDENTIALSMESSAGE
 DESCRIPTOR.message_types_by_name['SellerFeedbackMessage'] = _SELLERFEEDBACKMESSAGE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
-InsertMessage = _reflection.GeneratedProtocolMessageType('InsertMessage', (_message.Message,), {
-  'DESCRIPTOR' : _INSERTMESSAGE,
-  '__module__' : 'customers_pb2'
-  # @@protoc_insertion_point(class_scope:customers.InsertMessage)
-  })
-_sym_db.RegisterMessage(InsertMessage)
-
-UpdateMessage = _reflection.GeneratedProtocolMessageType('UpdateMessage', (_message.Message,), {
-  'DESCRIPTOR' : _UPDATEMESSAGE,
-  '__module__' : 'customers_pb2'
-  # @@protoc_insertion_point(class_scope:customers.UpdateMessage)
-  })
-_sym_db.RegisterMessage(UpdateMessage)
-
-SelectOneMessage = _reflection.GeneratedProtocolMessageType('SelectOneMessage', (_message.Message,), {
-  'DESCRIPTOR' : _SELECTONEMESSAGE,
-  '__module__' : 'customers_pb2'
-  # @@protoc_insertion_point(class_scope:customers.SelectOneMessage)
-  })
-_sym_db.RegisterMessage(SelectOneMessage)
-
-SelectManyMessage = _reflection.GeneratedProtocolMessageType('SelectManyMessage', (_message.Message,), {
-  'DESCRIPTOR' : _SELECTMANYMESSAGE,
-  '__module__' : 'customers_pb2'
-  # @@protoc_insertion_point(class_scope:customers.SelectManyMessage)
-  })
-_sym_db.RegisterMessage(SelectManyMessage)
 
 generalResponse = _reflection.GeneratedProtocolMessageType('generalResponse', (_message.Message,), {
   'DESCRIPTOR' : _GENERALRESPONSE,
@@ -871,19 +814,19 @@ generalResponse = _reflection.GeneratedProtocolMessageType('generalResponse', (_
   })
 _sym_db.RegisterMessage(generalResponse)
 
-CreateAccountMessage = _reflection.GeneratedProtocolMessageType('CreateAccountMessage', (_message.Message,), {
-  'DESCRIPTOR' : _CREATEACCOUNTMESSAGE,
+CreateAccountRequestMessage = _reflection.GeneratedProtocolMessageType('CreateAccountRequestMessage', (_message.Message,), {
+  'DESCRIPTOR' : _CREATEACCOUNTREQUESTMESSAGE,
   '__module__' : 'customers_pb2'
-  # @@protoc_insertion_point(class_scope:customers.CreateAccountMessage)
+  # @@protoc_insertion_point(class_scope:customers.CreateAccountRequestMessage)
   })
-_sym_db.RegisterMessage(CreateAccountMessage)
+_sym_db.RegisterMessage(CreateAccountRequestMessage)
 
-LoginMessage = _reflection.GeneratedProtocolMessageType('LoginMessage', (_message.Message,), {
-  'DESCRIPTOR' : _LOGINMESSAGE,
+LoginRequestMessage = _reflection.GeneratedProtocolMessageType('LoginRequestMessage', (_message.Message,), {
+  'DESCRIPTOR' : _LOGINREQUESTMESSAGE,
   '__module__' : 'customers_pb2'
-  # @@protoc_insertion_point(class_scope:customers.LoginMessage)
+  # @@protoc_insertion_point(class_scope:customers.LoginRequestMessage)
   })
-_sym_db.RegisterMessage(LoginMessage)
+_sym_db.RegisterMessage(LoginRequestMessage)
 
 SearchProductMessage = _reflection.GeneratedProtocolMessageType('SearchProductMessage', (_message.Message,), {
   'DESCRIPTOR' : _SEARCHPRODUCTMESSAGE,
@@ -892,33 +835,33 @@ SearchProductMessage = _reflection.GeneratedProtocolMessageType('SearchProductMe
   })
 _sym_db.RegisterMessage(SearchProductMessage)
 
-AddToCartMessage = _reflection.GeneratedProtocolMessageType('AddToCartMessage', (_message.Message,), {
-  'DESCRIPTOR' : _ADDTOCARTMESSAGE,
+AddToCartRequestMessage = _reflection.GeneratedProtocolMessageType('AddToCartRequestMessage', (_message.Message,), {
+  'DESCRIPTOR' : _ADDTOCARTREQUESTMESSAGE,
   '__module__' : 'customers_pb2'
-  # @@protoc_insertion_point(class_scope:customers.AddToCartMessage)
+  # @@protoc_insertion_point(class_scope:customers.AddToCartRequestMessage)
   })
-_sym_db.RegisterMessage(AddToCartMessage)
+_sym_db.RegisterMessage(AddToCartRequestMessage)
 
-RemoveFromCartMessage = _reflection.GeneratedProtocolMessageType('RemoveFromCartMessage', (_message.Message,), {
-  'DESCRIPTOR' : _REMOVEFROMCARTMESSAGE,
+RemoveFromCartRequestMessage = _reflection.GeneratedProtocolMessageType('RemoveFromCartRequestMessage', (_message.Message,), {
+  'DESCRIPTOR' : _REMOVEFROMCARTREQUESTMESSAGE,
   '__module__' : 'customers_pb2'
-  # @@protoc_insertion_point(class_scope:customers.RemoveFromCartMessage)
+  # @@protoc_insertion_point(class_scope:customers.RemoveFromCartRequestMessage)
   })
-_sym_db.RegisterMessage(RemoveFromCartMessage)
+_sym_db.RegisterMessage(RemoveFromCartRequestMessage)
 
-ClearCartMessage = _reflection.GeneratedProtocolMessageType('ClearCartMessage', (_message.Message,), {
-  'DESCRIPTOR' : _CLEARCARTMESSAGE,
+ClearCartRequestMessage = _reflection.GeneratedProtocolMessageType('ClearCartRequestMessage', (_message.Message,), {
+  'DESCRIPTOR' : _CLEARCARTREQUESTMESSAGE,
   '__module__' : 'customers_pb2'
-  # @@protoc_insertion_point(class_scope:customers.ClearCartMessage)
+  # @@protoc_insertion_point(class_scope:customers.ClearCartRequestMessage)
   })
-_sym_db.RegisterMessage(ClearCartMessage)
+_sym_db.RegisterMessage(ClearCartRequestMessage)
 
-DisplayCartMessage = _reflection.GeneratedProtocolMessageType('DisplayCartMessage', (_message.Message,), {
-  'DESCRIPTOR' : _DISPLAYCARTMESSAGE,
+DisplayCartRequestMessage = _reflection.GeneratedProtocolMessageType('DisplayCartRequestMessage', (_message.Message,), {
+  'DESCRIPTOR' : _DISPLAYCARTREQUESTMESSAGE,
   '__module__' : 'customers_pb2'
-  # @@protoc_insertion_point(class_scope:customers.DisplayCartMessage)
+  # @@protoc_insertion_point(class_scope:customers.DisplayCartRequestMessage)
   })
-_sym_db.RegisterMessage(DisplayCartMessage)
+_sym_db.RegisterMessage(DisplayCartRequestMessage)
 
 MakePurchaseMessage = _reflection.GeneratedProtocolMessageType('MakePurchaseMessage', (_message.Message,), {
   'DESCRIPTOR' : _MAKEPURCHASEMESSAGE,
@@ -955,6 +898,41 @@ LogoutMessage = _reflection.GeneratedProtocolMessageType('LogoutMessage', (_mess
   })
 _sym_db.RegisterMessage(LogoutMessage)
 
+GetBuyerIdRequestMessage = _reflection.GeneratedProtocolMessageType('GetBuyerIdRequestMessage', (_message.Message,), {
+  'DESCRIPTOR' : _GETBUYERIDREQUESTMESSAGE,
+  '__module__' : 'customers_pb2'
+  # @@protoc_insertion_point(class_scope:customers.GetBuyerIdRequestMessage)
+  })
+_sym_db.RegisterMessage(GetBuyerIdRequestMessage)
+
+GetBuyerIdResponseMessage = _reflection.GeneratedProtocolMessageType('GetBuyerIdResponseMessage', (_message.Message,), {
+  'DESCRIPTOR' : _GETBUYERIDRESPONSEMESSAGE,
+  '__module__' : 'customers_pb2'
+  # @@protoc_insertion_point(class_scope:customers.GetBuyerIdResponseMessage)
+  })
+_sym_db.RegisterMessage(GetBuyerIdResponseMessage)
+
+SetLoginStateRequestMessage = _reflection.GeneratedProtocolMessageType('SetLoginStateRequestMessage', (_message.Message,), {
+  'DESCRIPTOR' : _SETLOGINSTATEREQUESTMESSAGE,
+  '__module__' : 'customers_pb2'
+  # @@protoc_insertion_point(class_scope:customers.SetLoginStateRequestMessage)
+  })
+_sym_db.RegisterMessage(SetLoginStateRequestMessage)
+
+CartItem = _reflection.GeneratedProtocolMessageType('CartItem', (_message.Message,), {
+  'DESCRIPTOR' : _CARTITEM,
+  '__module__' : 'customers_pb2'
+  # @@protoc_insertion_point(class_scope:customers.CartItem)
+  })
+_sym_db.RegisterMessage(CartItem)
+
+DisplayCartResponseMessage = _reflection.GeneratedProtocolMessageType('DisplayCartResponseMessage', (_message.Message,), {
+  'DESCRIPTOR' : _DISPLAYCARTRESPONSEMESSAGE,
+  '__module__' : 'customers_pb2'
+  # @@protoc_insertion_point(class_scope:customers.DisplayCartResponseMessage)
+  })
+_sym_db.RegisterMessage(DisplayCartResponseMessage)
+
 UserCredentialsMessage = _reflection.GeneratedProtocolMessageType('UserCredentialsMessage', (_message.Message,), {
   'DESCRIPTOR' : _USERCREDENTIALSMESSAGE,
   '__module__' : 'customers_pb2'
@@ -978,8 +956,8 @@ _CUSTOMERS = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1281,
-  serialized_end=2465,
+  serialized_start=1230,
+  serialized_end=2569,
   methods=[
   _descriptor.MethodDescriptor(
     name='UpdateSellerFeedback',
@@ -1016,7 +994,7 @@ _CUSTOMERS = _descriptor.ServiceDescriptor(
     full_name='customers.Customers.CreateAccount',
     index=3,
     containing_service=None,
-    input_type=_CREATEACCOUNTMESSAGE,
+    input_type=_CREATEACCOUNTREQUESTMESSAGE,
     output_type=_GENERALRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
@@ -1026,17 +1004,7 @@ _CUSTOMERS = _descriptor.ServiceDescriptor(
     full_name='customers.Customers.Login',
     index=4,
     containing_service=None,
-    input_type=_LOGINMESSAGE,
-    output_type=_GENERALRESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='SearchProduct',
-    full_name='customers.Customers.SearchProduct',
-    index=5,
-    containing_service=None,
-    input_type=_SEARCHPRODUCTMESSAGE,
+    input_type=_LOGINREQUESTMESSAGE,
     output_type=_GENERALRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
@@ -1044,19 +1012,19 @@ _CUSTOMERS = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='AddToCart',
     full_name='customers.Customers.AddToCart',
-    index=6,
+    index=5,
     containing_service=None,
-    input_type=_ADDTOCARTMESSAGE,
+    input_type=_ADDTOCARTREQUESTMESSAGE,
     output_type=_GENERALRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='RemoveFromCart',
-    full_name='customers.Customers.RemoveFromCart',
-    index=7,
+    name='RemoveItemFromCart',
+    full_name='customers.Customers.RemoveItemFromCart',
+    index=6,
     containing_service=None,
-    input_type=_REMOVEFROMCARTMESSAGE,
+    input_type=_REMOVEFROMCARTREQUESTMESSAGE,
     output_type=_GENERALRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
@@ -1064,9 +1032,9 @@ _CUSTOMERS = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='ClearCart',
     full_name='customers.Customers.ClearCart',
-    index=8,
+    index=7,
     containing_service=None,
-    input_type=_CLEARCARTMESSAGE,
+    input_type=_CLEARCARTREQUESTMESSAGE,
     output_type=_GENERALRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
@@ -1074,17 +1042,17 @@ _CUSTOMERS = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='DisplayCart',
     full_name='customers.Customers.DisplayCart',
-    index=9,
+    index=8,
     containing_service=None,
-    input_type=_DISPLAYCARTMESSAGE,
-    output_type=_GENERALRESPONSE,
+    input_type=_DISPLAYCARTREQUESTMESSAGE,
+    output_type=_DISPLAYCARTRESPONSEMESSAGE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
     name='MakePurchase',
     full_name='customers.Customers.MakePurchase',
-    index=10,
+    index=9,
     containing_service=None,
     input_type=_MAKEPURCHASEMESSAGE,
     output_type=_GENERALRESPONSE,
@@ -1094,7 +1062,7 @@ _CUSTOMERS = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='PurchaseHistory',
     full_name='customers.Customers.PurchaseHistory',
-    index=11,
+    index=10,
     containing_service=None,
     input_type=_PURCHASEHISTORYMESSAGE,
     output_type=_GENERALRESPONSE,
@@ -1104,7 +1072,7 @@ _CUSTOMERS = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='ProvideFeedback',
     full_name='customers.Customers.ProvideFeedback',
-    index=12,
+    index=11,
     containing_service=None,
     input_type=_PROVIDEFEEDBACKMESSAGE,
     output_type=_GENERALRESPONSE,
@@ -1114,7 +1082,7 @@ _CUSTOMERS = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetSellerRating',
     full_name='customers.Customers.GetSellerRating',
-    index=13,
+    index=12,
     containing_service=None,
     input_type=_GETSELLERRATINGMESSAGE,
     output_type=_GENERALRESPONSE,
@@ -1124,9 +1092,29 @@ _CUSTOMERS = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Logout',
     full_name='customers.Customers.Logout',
-    index=14,
+    index=13,
     containing_service=None,
     input_type=_LOGOUTMESSAGE,
+    output_type=_GENERALRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetBuyerId',
+    full_name='customers.Customers.GetBuyerId',
+    index=14,
+    containing_service=None,
+    input_type=_GETBUYERIDREQUESTMESSAGE,
+    output_type=_GETBUYERIDRESPONSEMESSAGE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetLoginState',
+    full_name='customers.Customers.SetLoginState',
+    index=15,
+    containing_service=None,
+    input_type=_SETLOGINSTATEREQUESTMESSAGE,
     output_type=_GENERALRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,

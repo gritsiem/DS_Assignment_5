@@ -47,3 +47,9 @@ The exact configuration changes depending on how you structure the network. Howe
 ```
 python seller/seller_client.py
 ```
+
+
+#### To do
+- handle execute - include pid, and if pid = self pid then continue execution?
+- figure out data structures - request, sequence queues + histories - request to queue mapping
+- figure out metadata - aru i guess --------- dang it

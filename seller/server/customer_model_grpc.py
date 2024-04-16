@@ -55,7 +55,7 @@ class CustomerInterfaceGRPC:
 
 if __name__ == "__main__":
     client = CustomerInterfaceGRPC()
-    print(client.registerSeller("user9","usernine"))
+    print(client.registerSeller("user1","userone"))
     # print(client.updateFeedback(3,3,4))
     print("seller db client started..")
     # print(client.getUser("user1"))
