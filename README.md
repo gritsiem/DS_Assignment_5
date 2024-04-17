@@ -20,9 +20,13 @@ There are 7 components:
 Each client is connected to a server by randomly picking one of the available servers. All the buyer servers are connected to the SOAP server.  
 
 ### Database Group Communication
-For Customer Database, rotating sequencer atomic broadcast protocol is used for the group communication. 
+- Customer Database
+ A rotating sequencer atomic broadcast protocol is used for the group communication. Requests can go to any of the 5 replicas. Each acts as the sequencer in turn, if conditions of total ordering are satisfied. This ensures that each server's local request order is maintained and all the DBs have the same order of write requests.
 
-For Products Database, PySyncObj is used for the group communication. PySyncObj is one of the open-source implementation of the Raft in Python.  
+ Additionally, negative acknowledgement is used to retransmit any missing sequence or request messages.
+
+- Products Database
+PySyncObj is used for the group communication. PySyncObj is one of the open-source implementation of the Raft in Python.  
 #### Assumptions
 
 ## How to Set Up 
@@ -39,10 +43,27 @@ Use the client scripts to start "n" number of clients. Each client randomly choo
 python seller/start_clients.py -n 1
 ```
 
+#### Customer DB
+Update the list of CUSTOMER_SERVERS in the .env file based on number and IP addresses of the servers. (you can have less or more than 5 if you want).
+
+1. Set up PostgreSQL on your system
+Based on number of replicas, create DBs in Postgres with name ```customers_db<n>```. Create the seller table in each. 
+
+2. GRPC server
+For each server, open a new terminal and run the following command:
+```
+python grpcdb/customer/customer_db_server.py <pid> <address>
+```
+For example, based on the ([example .env file](./dotenv_example.txt)). Repeat for each server.
+```
+python grpcdb/customer/customer_db_server.py 0 localhost:6080
+```
+
 ### CloudLab Setup
 #### Seller side
 The exact configuration changes depending on how you structure the network. However, the following guidelines hold
-1. Upload the ```root/seller/server``` folder in all intended servers. Get the IP addresses for each. Update the IP addresses in the .env file.
+1. Upload the ```root/seller/server``` folder in all intended backend servers. Get the IP addresses for each. Update the IP addresses in the .env file.
+
 2. Replicate the .env file in each seller client machine and then start the client from the terminal using:
 ```
 python seller/seller_client.py

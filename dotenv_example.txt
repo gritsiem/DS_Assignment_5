@@ -7,3 +7,11 @@ SELLER_SERVERS = "
 127.0.0.1:5010
 127.0.0.1:5015
 "
+
+CUSTOMER_SERVERS = "
+0-localhost:6080
+1-localhost:6085
+2-localhost:6090
+3-localhost:6095
+4-localhost:6100
+"

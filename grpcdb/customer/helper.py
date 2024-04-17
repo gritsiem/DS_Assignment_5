@@ -31,6 +31,7 @@ class Helper:
             print("creation error", e)
         self.connection.commit()
         print("DB server started") 
+        
     def _registerSellerDB(self,request):
         try:
             self.cursor.execute("INSERT INTO seller (username, password) VALUES \

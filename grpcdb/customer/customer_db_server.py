@@ -7,8 +7,9 @@ import os
 import grpc
 import customers_pb2 as pb2
 import customers_pb2_grpc as pb2grpc
-from order_intercepter import OrderInterceptor
+
 from helper import Helper
+from group_communicator import Request, Member
 '''
 File to run server for seller in the E-Market application
 Server
@@ -21,18 +22,19 @@ Server
 
 
 class CustomerDB(pb2grpc.CustomersServicer):
-    def __init__(self,pid):
+    def __init__(self,addr,pid):
         '''
         Initializes for binding server to port and keeps track of active connections over all clients 
         '''
         self.__local_sequence_number = 0
         self.helper = Helper(pid)
-
+        self.member = Member(addr, pid)
 
     def RegisterSellerDB(self, request, context):
         # un, pw
-        newid = self.helper._registerSellerDB(request)
-
+        # newid = self.helper._registerSellerDB(request)
+        req = Request("RegisterSellerDB", request)
+        newid = self.member.send_request_msg(req)
 
         response = pb2.generalResponse() 
         response.msg = str(newid)  
@@ -41,7 +43,6 @@ class CustomerDB(pb2grpc.CustomersServicer):
         
     def GetUserDB(self, request, context):
         # un, password (optional)
-        print("call")
         user = None
         x = self.helper._gettUserDB(request)
         if x!=-1:
@@ -53,8 +54,9 @@ class CustomerDB(pb2grpc.CustomersServicer):
     
     def UpdateSellerFeedback(self, request, context):
         # seller_id,tu,td
-        print("here")
-        self.helper._updateSellerFeedback(request)
+        # self.helper._updateSellerFeedback(request)
+        req = Request("UpdateSellerFeedback", request)
+        newid = self.member.send_request_msg(req)
         response = pb2.generalResponse() 
         response.msg = str(1) 
         return response
@@ -62,8 +64,9 @@ class CustomerDB(pb2grpc.CustomersServicer):
 
 def serve(addr=None,id=None):
 
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=200), interceptors=(OrderInterceptor(addr,id),))
-    pb2grpc.add_CustomersServicer_to_server(CustomerDB(id),server)
+    # server = grpc.server(futures.ThreadPoolExecutor(max_workers=200), interceptors=(OrderInterceptor(addr,id),))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=200))
+    pb2grpc.add_CustomersServicer_to_server(CustomerDB(addr,id),server)
     server.add_insecure_port(addr)
     
     server.start()
