@@ -8,6 +8,7 @@ from products_db_model import ProductsDatabase
 from customers_db_model import CustomersDatabase
 from dotenv import load_dotenv
 from zeep import Client
+import sys
 
 import grpc
 import customers_pb2_grpc
@@ -370,5 +371,9 @@ def handle_logout():
     #     conn.close()
 
 if __name__ == "__main__":
-    app.run(debug=True, host=os.getenv("HOST", "0.0.0.0"), port=int(os.getenv("PORT")) )
+    print("Server system argument: ", sys.argv)
+    if len(sys.argv) > 2:
+        app.run(host=sys.argv[1], port=int(sys.argv[2]), debug=True)
+    else:
+        app.run(host = "0.0.0.0", debug=True)
     
