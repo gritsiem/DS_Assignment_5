@@ -49,6 +49,16 @@ class ProductsStub(object):
                 request_serializer=products__pb2.GetProductDetailsRequestMessage.SerializeToString,
                 response_deserializer=products__pb2.GetProductDetailsResponseMessage.FromString,
                 )
+        self.UpdateFeedback = channel.unary_unary(
+                '/products.Products/UpdateFeedback',
+                request_serializer=products__pb2.UpdateFeedbackRequestMessage.SerializeToString,
+                response_deserializer=products__pb2.generalResponse.FromString,
+                )
+        self.GetSellerId = channel.unary_unary(
+                '/products.Products/GetSellerId',
+                request_serializer=products__pb2.GetSellerIdRequestMessage.SerializeToString,
+                response_deserializer=products__pb2.GetSellerIdResponseMessage.FromString,
+                )
 
 
 class ProductsServicer(object):
@@ -96,6 +106,18 @@ class ProductsServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateFeedback(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetSellerId(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ProductsServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -133,6 +155,16 @@ def add_ProductsServicer_to_server(servicer, server):
                     servicer.GetProductDetails,
                     request_deserializer=products__pb2.GetProductDetailsRequestMessage.FromString,
                     response_serializer=products__pb2.GetProductDetailsResponseMessage.SerializeToString,
+            ),
+            'UpdateFeedback': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateFeedback,
+                    request_deserializer=products__pb2.UpdateFeedbackRequestMessage.FromString,
+                    response_serializer=products__pb2.generalResponse.SerializeToString,
+            ),
+            'GetSellerId': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSellerId,
+                    request_deserializer=products__pb2.GetSellerIdRequestMessage.FromString,
+                    response_serializer=products__pb2.GetSellerIdResponseMessage.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -260,5 +292,39 @@ class Products(object):
         return grpc.experimental.unary_unary(request, target, '/products.Products/GetProductDetails',
             products__pb2.GetProductDetailsRequestMessage.SerializeToString,
             products__pb2.GetProductDetailsResponseMessage.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateFeedback(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/products.Products/UpdateFeedback',
+            products__pb2.UpdateFeedbackRequestMessage.SerializeToString,
+            products__pb2.generalResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetSellerId(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/products.Products/GetSellerId',
+            products__pb2.GetSellerIdRequestMessage.SerializeToString,
+            products__pb2.GetSellerIdResponseMessage.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

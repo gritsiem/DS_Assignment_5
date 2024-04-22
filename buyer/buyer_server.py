@@ -8,6 +8,7 @@ from products_db_model import ProductsDatabase
 from customers_db_model import CustomersDatabase
 from dotenv import load_dotenv
 from zeep import Client
+import sys
 
 import grpc
 import customers_pb2_grpc
@@ -181,7 +182,7 @@ def get_product_details_with_grpc(product_id):
     response = stub.GetProductDetails(request)
     if response:  
         return {
-            "name": response.name,
+            "name": response.item_name,
             "price": response.sale_price
         }
     return None
@@ -195,7 +196,7 @@ def handle_display_cart():
     if not response:
         return jsonify({"message": "Your cart is empty"}), 200
     cart_display = []
-    for product_id, quantity in cart_items:
+    for product_id, quantity in response:
         product_detail = get_product_details_with_grpc(product_id)
         if product_detail:
             item_name = product_detail['name']
@@ -247,22 +248,59 @@ def handle_purchase_history():
     else:
         return jsonify({"message": "Error retrieving purchase history"}), 401  
 
+def has_provided_feedback_with_grpc(buyer_id, product_id):
+    stub = get_customers_stub()
+    request = customers_pb2.HasProvidedFeedbackRequestMessage(buyer_id = buyer_id, product_id = product_id) 
+    response = stub.HasProvidedFeedback(request).has_provided
+    print("Has Provided Feedback response from grpc: ", response)
+    return response
+
+def update_customer_feedback_with_grpc(buyer_id, product_id):
+    stub = get_customers_stub()
+    request = customers_pb2.UpdateProvideFeedbackRequestMessage(buyer_id = buyer_id, product_id = product_id) 
+    response = stub.UpdateCustomerProvideFeedback(request).msg
+    print("Update Provide Feedback response from grpc: ", response)
+    return response
+
+def update_feedback_with_grpc(product_id, feedback_type):
+    stub = get_products_stub()
+    request = products_pb2.UpdateFeedbackRequestMessage(product_id = product_id, feedback_type = feedback_type)
+    response = stub.UpdateFeedback(request).msg
+    print("Update Product Feedback response from grpc: ", response)
+    return response
+
+def get_seller_id_with_grpc(product_id):
+    stub = get_products_stub()
+    request = products_pb2.GetSellerIdRequestMessage(product_id = product_id)
+    response = stub.GetSellerId(request).seller_id
+    print("Seller Id response from grpc: ", response)
+    return response
+
+def update_seller_feedback_with_grpc(seller_id, feedback_type):
+    stub = get_customers_stub()
+    request = customers_pb2.UpdateSellerFeedbackRequestMessage(seller_id = seller_id, feedback_type = feedback_type) 
+    response = stub.UpdateSellerFeedbackFromBuyer(request)
+    print("Update Seller Feedback response from grpc: ", response)
+    return response
+
 @app.route('/provide_feedback', methods = ['POST'])
 def handle_provide_feedback():
     data = request.json
-    buyer_id = data['buyer_id']
-    product_id = data['product_id']
-    feedback_type = data['feedback_type']
+    buyer_id = int(data['buyer_id'])
+    product_id = int(data['product_id'])
+    feedback_type = int(data['feedback_type'])
     print(f"[SERVER] BuyerId: {buyer_id}, product_id: {product_id}, feedback_type: {feedback_type}")
-    # Check if feedback has already been provided for this product
-    if customers_db.has_provided_feedback(buyer_id, product_id):
+
+    feedback_provided = has_provided_feedback_with_grpc(buyer_id, product_id)
+    # print("Feedback provided: ", feedback_provided)
+    if feedback_provided:
         return jsonify({"message": "Feedback already provided for this product."}), 400
     
-    cart_item_update_result = customers_db.update_feedback(buyer_id, product_id)
-    feedback_result = products_db.update_feedback(product_id, feedback_type)
+    cart_item_update_result  = update_customer_feedback_with_grpc(buyer_id, product_id)
+    feedback_result = update_feedback_with_grpc(product_id, feedback_type)
 
-    seller_id = products_db.get_seller_id(product_id)
-    seller_update_result = customers_db.update_seller_feedback(seller_id, feedback_type)
+    seller_id = get_seller_id_with_grpc(product_id)
+    seller_update_result = update_seller_feedback_with_grpc(seller_id, feedback_type)
 
     if feedback_result and cart_item_update_result and seller_update_result:
         return jsonify({"message": "Feedback updated successfully."}), 200
@@ -370,5 +408,9 @@ def handle_logout():
     #     conn.close()
 
 if __name__ == "__main__":
-    app.run(debug=True, host=os.getenv("HOST", "0.0.0.0"), port=int(os.getenv("PORT")) )
+    print("Server system argument: ", sys.argv)
+    if len(sys.argv) > 2:
+        app.run(host=sys.argv[1], port=int(sys.argv[2]), debug=True)
+    else:
+        app.run(host = "0.0.0.0", port=int(os.getenv("PORT")), debug=True)
     

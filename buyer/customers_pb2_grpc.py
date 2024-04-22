@@ -94,6 +94,21 @@ class CustomersStub(object):
                 request_serializer=customers__pb2.SetLoginStateRequestMessage.SerializeToString,
                 response_deserializer=customers__pb2.generalResponse.FromString,
                 )
+        self.HasProvidedFeedback = channel.unary_unary(
+                '/customers.Customers/HasProvidedFeedback',
+                request_serializer=customers__pb2.HasProvidedFeedbackRequestMessage.SerializeToString,
+                response_deserializer=customers__pb2.HasProvidedFeedbackResponseMessage.FromString,
+                )
+        self.UpdateCustomerProvideFeedback = channel.unary_unary(
+                '/customers.Customers/UpdateCustomerProvideFeedback',
+                request_serializer=customers__pb2.UpdateProvideFeedbackRequestMessage.SerializeToString,
+                response_deserializer=customers__pb2.generalResponse.FromString,
+                )
+        self.UpdateSellerFeedbackFromBuyer = channel.unary_unary(
+                '/customers.Customers/UpdateSellerFeedbackFromBuyer',
+                request_serializer=customers__pb2.UpdateSellerFeedbackRequestMessage.SerializeToString,
+                response_deserializer=customers__pb2.generalResponse.FromString,
+                )
 
 
 class CustomersServicer(object):
@@ -195,6 +210,24 @@ class CustomersServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def HasProvidedFeedback(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateCustomerProvideFeedback(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateSellerFeedbackFromBuyer(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_CustomersServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -276,6 +309,21 @@ def add_CustomersServicer_to_server(servicer, server):
             'SetLoginState': grpc.unary_unary_rpc_method_handler(
                     servicer.SetLoginState,
                     request_deserializer=customers__pb2.SetLoginStateRequestMessage.FromString,
+                    response_serializer=customers__pb2.generalResponse.SerializeToString,
+            ),
+            'HasProvidedFeedback': grpc.unary_unary_rpc_method_handler(
+                    servicer.HasProvidedFeedback,
+                    request_deserializer=customers__pb2.HasProvidedFeedbackRequestMessage.FromString,
+                    response_serializer=customers__pb2.HasProvidedFeedbackResponseMessage.SerializeToString,
+            ),
+            'UpdateCustomerProvideFeedback': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateCustomerProvideFeedback,
+                    request_deserializer=customers__pb2.UpdateProvideFeedbackRequestMessage.FromString,
+                    response_serializer=customers__pb2.generalResponse.SerializeToString,
+            ),
+            'UpdateSellerFeedbackFromBuyer': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateSellerFeedbackFromBuyer,
+                    request_deserializer=customers__pb2.UpdateSellerFeedbackRequestMessage.FromString,
                     response_serializer=customers__pb2.generalResponse.SerializeToString,
             ),
     }
@@ -556,6 +604,57 @@ class Customers(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/customers.Customers/SetLoginState',
             customers__pb2.SetLoginStateRequestMessage.SerializeToString,
+            customers__pb2.generalResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def HasProvidedFeedback(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/customers.Customers/HasProvidedFeedback',
+            customers__pb2.HasProvidedFeedbackRequestMessage.SerializeToString,
+            customers__pb2.HasProvidedFeedbackResponseMessage.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateCustomerProvideFeedback(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/customers.Customers/UpdateCustomerProvideFeedback',
+            customers__pb2.UpdateProvideFeedbackRequestMessage.SerializeToString,
+            customers__pb2.generalResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateSellerFeedbackFromBuyer(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/customers.Customers/UpdateSellerFeedbackFromBuyer',
+            customers__pb2.UpdateSellerFeedbackRequestMessage.SerializeToString,
             customers__pb2.generalResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

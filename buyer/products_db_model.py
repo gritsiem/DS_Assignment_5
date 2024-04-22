@@ -71,11 +71,14 @@ class ProductsDatabase:
             # column_to_increment = 'thumbs_up_count' if feedback_type == '1' else 'thumbs_down_count'
             # print(f"Column: {column_to_increment}")
             # query = f"UPDATE product SET {column_to_increment} = (SELECT {column_to_increment} FROM product WHERE id = %s) +1 WHERE id = %s"
-            if feedback_type == '1':
+            print("Feedback Type: ", feedback_type)
+            if str(feedback_type) == '1':
+                print("Updating thumbs up count....")
                 query = "UPDATE product SET thumbs_up_count = (SELECT thumbs_up_count FROM product WHERE id = %s) +1 WHERE id = %s"
             else:
+                print("Updating thumbs down count....")
                 query = "UPDATE product SET thumbs_down_count = (SELECT thumbs_down_count FROM product WHERE id = %s) +1 WHERE id = %s"
-            print(f"Query: {query}")
+            # print(f"Query: {query}")
             self.cursor.execute(query, (product_id,product_id))
             self.connection.commit()
             return "Feedback updated successfully."
