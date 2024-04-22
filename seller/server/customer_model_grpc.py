@@ -21,6 +21,7 @@ class CustomerInterfaceGRPC:
     def inititate_connection(self):
         self.channel = grpc.insecure_channel(self._ADDRESS,options=(('grpc.enable_http_proxy',0),))
         self.__stub = pb2grpc.CustomersStub(self.channel)
+        print("Seller initialized connection to DB")
 
     def registerSeller(self, un, pw):
         try:

@@ -73,6 +73,7 @@ class Client():
                 print("Please enter valid username and password")
 
         resp = requests.post(self.__URLS["register"], data={"username":un, "password":pw})
+        print("Received response: ", resp)
         resp = resp.json()
         self.__token= (resp['data'])["token"]
         return resp["msg"]

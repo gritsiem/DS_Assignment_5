@@ -335,7 +335,7 @@ class SellerPortal:
 
         # call api
         code, msg = self.seller.registerUser(un,pw)
-
+        print("[DEBUG] code: ", code, " msg: ",msg)
         # generate response based on api result
         if  code == 1:
             self.globalResponse["msg"] = f"Created Account for {un} \nPress enter to go to the landing menu"
