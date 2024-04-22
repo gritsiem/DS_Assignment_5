@@ -183,7 +183,7 @@ class CustomersDatabase:
     
     def update_seller_feedback(self, seller_id, feedback_type):
         try:
-            column_to_increment = 'thumbs_up_count' if feedback_type == '1' else '2'
+            column_to_increment = 'thumbs_up_count' if str(feedback_type) == '1' else 'thumbs_down_count'
             self.cursor.execute(f"UPDATE seller SET {column_to_increment} = (SELECT {column_to_increment} FROM seller WHERE id = %s) + 1 WHERE id = %s", (seller_id, seller_id))
             self.connection.commit()
             return "Feedback updated successfully."

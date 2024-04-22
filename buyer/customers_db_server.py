@@ -62,6 +62,28 @@ class CustomersDbService(customers_pb2_grpc.CustomersServicer):
             )
         )
         return customers_pb2.DisplayCartResponseMessage(cart_items = cart_items_list)
+    
+    def HasProvidedFeedback(self, request, context):
+        buyer_id = request.buyer_id
+        product_id = request.product_id
+        # print(f"Checking feedback for buyer_id: {type(buyer_id)} {buyer_id}, product_id: {type(product_id)} {product_id}")
+        response = customers_db.has_provided_feedback(buyer_id, product_id)
+        print("Response for has provided feedback in the db server: ", response)
+        return customers_pb2.HasProvidedFeedbackResponseMessage(has_provided = response)
+    
+    def UpdateCustomerProvideFeedback(self, request, context):
+        buyer_id = request.buyer_id
+        product_id = request.product_id
+        response = customers_db.update_feedback(buyer_id, product_id)
+        print("Response for update customer provide feedback in the db server: ", response)
+        return customers_pb2.generalResponse(msg = response)
+
+    def UpdateSellerFeedbackFromBuyer(self, request, context):
+        seller_id = request.seller_id
+        feedback_type = request.feedback_type
+        response = customers_db.update_seller_feedback(seller_id, feedback_type)
+        print("Response for update seller feedback in the db server: ", response)
+        return customers_pb2.generalResponse(msg = response)
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=20))
