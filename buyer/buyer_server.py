@@ -21,13 +21,14 @@ load_dotenv()
 app = Flask(__name__)
 
 customers_db = CustomersDatabase()
-products_db = ProductsDatabase()
+products_db = ProductsDatabase('products_db')
 
 def get_customers_stub():
     return customers_pb2_grpc.CustomersStub(grpc.insecure_channel('localhost:5070'))
 
 def get_products_stub():
-    return products_pb2_grpc.ProductsStub(grpc.insecure_channel('localhost:5080'))
+    # return products_pb2_grpc.ProductsStub(grpc.insecure_channel('localhost:5080'))
+    return products_pb2_grpc.ProductsStub(grpc.insecure_channel('localhost:6000'))
 
 def create_account_with_grpc(username, password, name):
     stub = get_customers_stub()

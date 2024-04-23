@@ -1,4 +1,4 @@
-# DS_Assignment_4
+# DS_Assignment_5
 
 ## Description
 This project builds on the Atomic broadcast protocol in the existing E-commerce application [full stack project](https://github.com/NaveenaGanesan/DS_Assignment_4).
@@ -25,6 +25,10 @@ Each client is connected to a server by randomly picking one of the available se
 For the Customer Database server, we follow TOTEM based membership protocol consisting of join messages and 2 phase commits to come to consensus on the membership of the ring configurations. The ring refers to the same one which takes care of the group communication
 
 
+ A group membership protocol is used for this atomic broadcast protocol to manage and achieve consensus in the group membership. This protocol is based on TOTEM. A new group is formed when there is a change in the group membership. Messages such as join, commit, config change and retransmit are used to implement this protocol.
+
+- Products Database
+PySyncObj is used for the group communication. PySyncObj is one of the open-source implementation of the Raft in Python.  
 #### Assumptions
 Servers can fail ( but it is indistinguishable from communication failure).
 
