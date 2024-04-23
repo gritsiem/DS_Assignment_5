@@ -1,4 +1,4 @@
-# DS_Assignment_4
+# DS_Assignment_5
 
 ## Description
 This project builds on the E-commerce [full stack project](https://github.com/gritsiem/DS_Assignment_2).
@@ -24,6 +24,8 @@ Each client is connected to a server by randomly picking one of the available se
  A rotating sequencer atomic broadcast protocol is used for the group communication. Requests can go to any of the 5 replicas. Each acts as the sequencer in turn, if conditions of total ordering are satisfied. This ensures that each server's local request order is maintained and all the DBs have the same order of write requests.
 
  Additionally, negative acknowledgement is used to retransmit any missing sequence or request messages.
+
+ A group membership protocol is used for this atomic broadcast protocol to manage and achieve consensus in the group membership. This protocol is based on TOTEM. A new group is formed when there is a change in the group membership. Messages such as join, commit, config change and retransmit are used to implement this protocol.
 
 - Products Database
 PySyncObj is used for the group communication. PySyncObj is one of the open-source implementation of the Raft in Python.  
