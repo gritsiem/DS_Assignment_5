@@ -6,13 +6,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class ProductsDatabase:
-    def __init__(self):
+    def __init__(self, db_name):
         try:
+            print(f"Connecting to the db: {db_name}")
             pw = os.getenv('PASSWORD')
             un = os.getenv('USER_NAME')
             self.DB_HOST = 'localhost'
             self.DB_PORT = '5432'
-            self.DB_NAME = 'products_db'
+            # self.DB_NAME = 'products_db'
+            self.DB_NAME = db_name
             self.connection = psycopg2.connect(database=self.DB_NAME, user=un, password=pw, host=self.DB_HOST, port=self.DB_PORT)
             self.cursor = self.connection.cursor()
         except OperationalError as e:
