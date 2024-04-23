@@ -23,9 +23,9 @@ class SequenceMsg:
     def __init__(self, gid, reqid, aru):
         self.gid = gid
         self.reqid = reqid
-        self.aru = []
+        self.aru = aru
     def __repr__(self) -> str:
-        return f"gid = {self.gid}, request = {self.reqid}"
+        return f"gid = {self.gid}, request = {self.reqid}, aru = {self.aru}"
     
 class RequestMsg:
     def __init__(self, pid, lsn, req: Request):
@@ -69,6 +69,7 @@ class Member:
         self.__members = [ ((mem.split("-")[1]).split(":")[0],int((mem.split("-")[1]).split(":")[1])+1) for mem in self.__members]
         self.initiate_UDP()
         Member.aru = [-1 for m in range(Member.nmembers)]
+
         Member.pid = int(pid)
         Member.nextk = Member.pid%Member.nmembers
         Member.helper = Helper(Member.pid)
@@ -101,20 +102,24 @@ class Member:
         lsn = Member.lsn
         new_request = RequestMsg( Member.pid, Member.lsn, request)
         msg = self.create_msg(Types.request, new_request)
+
         Member.request_hist[Member.pid][Member.lsn] = request
+
         self.broadcast(msg)
+
         Member.RETURN_GRPC[lsn] = False
         while True:
             if Member.RETURN_GRPC[lsn]:
+                resp = Member.RETURN_GRPC[lsn]
                 del Member.RETURN_GRPC[lsn]
-                return lsn
+                return resp
             time.sleep(1)
 
     def status(self):
         print("Me aru = ", Member.my_aru)
         print("All aru = ", Member.aru)
         print("My requests = \n", Member.request_hist)
-        print("My sequences = \n", Member.sequence_hist)
+        print("My sequences = \n", Member.seq_to_reqid)
 
     def receive_msgs(self):
         print("waiting to receive on...", self.host, self.port)
@@ -137,10 +142,17 @@ class Member:
         # print("created msg")
         return { "type": type, "payload":payload}
     
+    def updateAru(self, newaru):
+        temp=[]
+        print("new_aru", newaru)
+        for x,y in zip(Member.aru, newaru):
+            temp.append(max(x,y))
+        Member.aru = temp
 
     def handleSequenceMsg(self, msg: SequenceMsg):
+        # msg will have global id, request id, and aru 
         gid = msg.gid
-        # msg will have global id, and request id 
+        self.updateAru(msg.aru)
 
         if not Member.is_my_turn:
             Member.is_my_turn = Member.nextk==gid+1 and Member.nextk%Member.nmembers == Member.pid
@@ -184,11 +196,46 @@ class Member:
             Member.request_hist[Member.pid][1]+=[msg]
             self.broadcast(msg)
 
-            
+    def canExecute(self, gid):
+        print("Testing execution conditions: ", Member.aru, gid)
+        majority = (Member.nmembers/2)+1
+        received = [1 for value in Member.aru if value >= gid]
+        if sum(received)>= majority:
+            print(sum(received))
+            return True
+        return False
     
     def handleExecute(self):
         Member.execute_q = dict(sorted(Member.execute_q.items()))
         print("Execute queue sorted: ",Member.execute_q)
+
+        keys_to_pop = []
+        for gid in Member.execute_q:
+            print("Execute GID?", gid)
+            # ensure majority of members have received the sequence message or move to the next GID
+            if not self.canExecute(gid):
+                print("NO!")
+                continue
+
+            pid,lsn = Member.seq_to_reqid[gid]
+            call = Member.execute_q[gid]
+            if pid == Member.pid:
+                print("GRPC return required")
+                newid = Member.helper.by_name(call.method, call.args)
+                Member.RETURN_GRPC[lsn] = newid 
+            else:
+                print("No GRPC execution")
+                Member.helper.by_name(call.method, call.args)
+            
+            keys_to_pop.append(gid)
+
+        for key in keys_to_pop:
+            del Member.execute_q[key]
+     
+    def handleExecute(self):
+        Member.execute_q = dict(sorted(Member.execute_q.items()))
+        print("Execute queue sorted: ",Member.execute_q)
+
         for gid in Member.execute_q:
             pid,lsn = Member.seq_to_reqid[gid]
             call = Member.execute_q[gid]
@@ -199,9 +246,36 @@ class Member:
             else:
                 print("No GRPC execution")
                 Member.helper.by_name(call.method, call.args)
-        
-        Member.execute_q={}
-                
+
+        Member.execute_q = {}
+     
+    def handleExecute2(self):
+        Member.execute_q = dict(sorted(Member.execute_q.items()))
+        print("Execute queue sorted: ",Member.execute_q)
+
+        keys_to_pop = []
+        for gid in Member.execute_q:
+            print("Execute GID?", gid)
+            # ensure majority of members have received the sequence message or move to the next GID
+            if not self.canExecute(gid):
+                print("NO!")
+                continue
+
+            pid,lsn = Member.seq_to_reqid[gid]
+            call = Member.execute_q[gid]
+            if pid == Member.pid:
+                print("GRPC return required")
+                newid = Member.helper.by_name(call.method, call.args)
+                Member.RETURN_GRPC[lsn] = newid 
+            else:
+                print("No GRPC execution")
+                Member.helper.by_name(call.method, call.args)
+            
+            keys_to_pop.append(gid)
+
+        for key in keys_to_pop:
+            del Member.execute_q[key]
+     
           
     def checkConditions(self, req_id):        
         if Member.my_aru!=Member.nextk-1:
@@ -250,14 +324,16 @@ class Member:
             
         # If it's my turn for creating request message -- 
         # check all three conditions to create a sequence message until satisfied or do retransmit.
+        
         print("checking sequence conditions: ", Member.nextk, Member.pid)
         if Member.is_my_turn and self.checkConditions(msg.id):
 
             aru = Member.aru
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n", aru, "\n```````````````````")
             aru[Member.pid] = Member.my_aru # update metadata
-
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n", aru, "\n```````````````````")
             # create sequence message
-            seqmsg = SequenceMsg(gid=Member.nextk, reqid=msg.id,aru=aru)
+            seqmsg = SequenceMsg(gid=Member.nextk, reqid=msg.id, aru=aru)
             seqmsg = self.create_msg(Types.sequence, seqmsg)
             self.broadcast(seqmsg)
 
