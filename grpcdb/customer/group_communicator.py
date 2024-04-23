@@ -14,6 +14,11 @@ class Types:
     sequence = "SEQUENCE_MSG"
     retransmit = "RETRANSMIT"
 
+class Timeouts:
+    TOKEN_TIMEOUT = 0.8
+    JOIN_TIMEOUT = 0.5
+
+
 class Request:
     def __init__(self, method_name:str, args: dict) -> None:
         self.method = method_name
@@ -34,6 +39,20 @@ class RequestMsg:
         self.metadata = None
     def __repr__(self) -> str:
         return f"pid = {self.id}, method = {self.request.method}"
+
+class JOIN_MESSAGE:
+    def __init__(self):
+        self.proc_set = []
+        self.fail_set = []
+
+class COMMIT_MESSAGE:
+    def __init__(self):
+        self.updated_members = []
+
+
+class MembershipProtocol:
+    def __init__(self):
+        pass
 
 class Member:
 

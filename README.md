@@ -1,9 +1,11 @@
 # DS_Assignment_4
 
 ## Description
-This project builds on the E-commerce [full stack project](https://github.com/gritsiem/DS_Assignment_2).
+This project builds on the Atomic broadcast protocol in the existing E-commerce application [full stack project](https://github.com/NaveenaGanesan/DS_Assignment_4).
 
-In this setup, we focus on creating and managing replicas of our existing server-side components. We replicate the REST servers and DBs for our application and manage them using group communication protocols based on TOTEM and Raft.
+In this setup, we focus on managing membership of our existing server-side components. 
+
+
 ### Architecture
 There are 7 components: 
 - 2 clients: Seller and Buyer
@@ -19,15 +21,13 @@ There are 7 components:
 
 Each client is connected to a server by randomly picking one of the available servers. All the buyer servers are connected to the SOAP server.  
 
-### Database Group Communication
-- Customer Database
- A rotating sequencer atomic broadcast protocol is used for the group communication. Requests can go to any of the 5 replicas. Each acts as the sequencer in turn, if conditions of total ordering are satisfied. This ensures that each server's local request order is maintained and all the DBs have the same order of write requests.
+### Database Membership protocol
+For the Customer Database server, we follow TOTEM based membership protocol consisting of join messages and 2 phase commits to come to consensus on the membership of the ring configurations. The ring refers to the same one which takes care of the group communication
 
- Additionally, negative acknowledgement is used to retransmit any missing sequence or request messages.
 
-- Products Database
-PySyncObj is used for the group communication. PySyncObj is one of the open-source implementation of the Raft in Python.  
 #### Assumptions
+Servers can fail ( but it is indistinguishable from communication failure).
+
 
 ## How to Set Up 
 ### Local setup (have one machine for all components)
@@ -68,9 +68,3 @@ The exact configuration changes depending on how you structure the network. Howe
 ```
 python seller/seller_client.py
 ```
-
-
-#### To do
-- handle execute - include pid, and if pid = self pid then continue execution?
-- figure out data structures - request, sequence queues + histories - request to queue mapping
-- figure out metadata - aru i guess --------- dang it
