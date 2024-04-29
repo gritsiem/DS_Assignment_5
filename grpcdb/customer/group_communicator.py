@@ -15,11 +15,12 @@ class Types:
     sequence = "SEQUENCE_MSG"
     retransmit = "RETRANSMIT"
     join = "JOIN_MSG"
+    commit = "COMMIT_MSG"
+    commit_token = "COMMIT_TOKEN"
 
 class Timeouts:
     TOKEN_TIMEOUT = 0.8
     JOIN_TIMEOUT = 0.5
-
 
 class Request:
     def __init__(self, method_name:str, args: dict) -> None:
@@ -49,14 +50,17 @@ class JOIN_MESSAGE:
         self.fail_set = fail_set
 
 class COMMIT_MESSAGE:
-    def __init__(self):
-        self.updated_members = []
+    def __init__(self, members, arus, delivered_msgs):
+        self.members = members
+        self.arus = arus
+        self.delivered_msgs = delivered_msgs
 
 class TIMEOUTS:
     join = 3
 
 class STATES:
     join = "JOIN"
+    commit = "COMMIT"
     operational = "OPERATIONAL"
 
 class Member:
@@ -230,6 +234,9 @@ class Member:
                 self.handleSequenceMsg(msg["payload"])
             elif msg["type"] == Types.retransmit:
                 self.handleRetransmitMsg(msg["payload"])
+            elif msg["type"] == Types.commit:
+                self.initiate_commit_state(msg["payload"])
+                self.handleCommitMsg(msg["payload"])
             elif msg["type"] == Types.join:
                 joinmsg:JOIN_MESSAGE = msg['payload']
                 if joinmsg.pid in Member.pids:
@@ -460,6 +467,32 @@ class Member:
                         Member.request_hist[Member.pid][0]+=[Member.lsn]
                         Member.request_hist[Member.pid][1]+=[msg]
                         self.broadcast(msg)
+    
+    def initiate_commit_state(self, msg):
+        if self.pid == min([m.pid for m in self.members]):  # Lowest ID starts the commit
+            arus = [self.aru[m.pid] for m in self.members]
+            delivered_msgs = {m.pid: self.message_history[m.pid] for m in self.members}
+            commit_msg = CommitMessage(self.members, arus, delivered_msgs)
+            commit_msg = self.create_msg(Types.commit, commit_msg)
+            self.broadcast(commit_msg)
+
+    def handleCommitMsg(self, msg):
+         if self.commit_round == 0:
+            self.update_state(msg)
+            self.commit_round = 1
+            msg = self.create_msg(Types.commit_token, msg)
+            self.broadcast(msg)
+        elif self.commit_round == 1:
+            # Start recovery phase after the second round
+            self.recovery_state()
+            self.commit_round = 0 
+    
+    def update_state(self, msg):
+        self.members = msg.members
+        for mem in msg.members:
+            self.aru[mem.pid] = msg.arus[mem.pid]
+            self.message_history[mem.pid] = msg.delivered_msgs[mem.pid]
+
                         
 
 
