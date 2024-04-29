@@ -7,6 +7,7 @@ import pickle
 import threading
 import time
 import sys
+import numpy as np
 
 load_dotenv()
 
@@ -17,6 +18,7 @@ class Types:
     join = "JOIN_MSG"
     commit = "COMMIT_MSG"
     commit_token = "COMMIT_TOKEN"
+    recovery = "RECOVERY_MSG"
 
 class Timeouts:
     TOKEN_TIMEOUT = 0.8
@@ -54,9 +56,15 @@ class COMMIT_MESSAGE:
         self.members = members
         self.arus = arus
         self.delivered_msgs = delivered_msgs
+class RECOVER_MESSAGE:
+    def __init__(self, start_aru, seq_to_req={}, requests=[]):
+        self.start_aru = start_aru
+        self.seq_to_req = seq_to_req
+        self.requests = requests
 
 class TIMEOUTS:
     join = 3
+    recovery=1
 
 class STATES:
     join = "JOIN"
@@ -90,6 +98,7 @@ class Member:
 
     #member protocol
     STATE = STATES.join
+    fail_set = []
 
     def __init__(self, addr, pid):
         self.host, port = addr.split(":")
@@ -111,6 +120,10 @@ class Member:
 
         if Member.pid==0:
             Member.is_my_turn = True
+
+        #protocol
+        self.commit_round=0
+
 
         Member.receive_thread = threading.Thread(target = self.receive_msgs)
         Member.receive_thread.start()    
@@ -165,8 +178,64 @@ class Member:
             time.sleep(1)
         Member.config = p
         print("Final configuration: ", Member.config)
-        Member.STATE = STATES.operational
         self.skt.settimeout(None)
+        Member.STATE = STATES.commit
+        self.initiate_commit_state(msg["payload"])
+        self.handleCommitMsg(msg["payload"])
+
+    def initiate_commit_state(self, msg):
+        if self.pid == min([m.pid for m in Member.config]):  # Lowest ID starts the commit
+            arus = [-1 for m in Member.config]
+            delivered_msgs = {m.pid: self.message_history[m.pid] for m in self.members}
+            commit_msg = COMMIT_MESSAGE(Member.config, arus, delivered_msgs)
+            commit_msg = self.create_msg(Types.commit, commit_msg)
+            self.broadcast(commit_msg)
+
+    def handleCommitMsg(self, msg):
+        if self.commit_round == 0:
+            self.update_state(msg)
+            self.commit_round = 1
+            msg = self.create_msg(Types.commit_token, msg)
+            self.broadcast(msg)
+        elif self.commit_round == 1:
+            # Start recovery phase after the second round
+            self.initiate_recovery_state()
+            self.commit_round = 0 
+    
+    def update_state(self, msg):
+        self.members = msg.members
+        for mem in msg.members:
+            Member.aru[mem.pid] = msg.arus[mem.pid]
+            self.message_history[mem.pid] = msg.delivered_msgs[mem.pid]
+
+    def initiate_recovery_state(self,msg):
+
+        self.skt.settimeout(TIMEOUTS.recovery)
+        # get maximum aru and pid with max aru
+        max_aru = max(Member.aru)
+        max_pid = np.argmax(Member.aru)
+
+        # send recovery message to that member
+        for member in Member.config:
+            if member[0]==max_pid:
+                msg = RECOVER_MESSAGE(Member.my_aru+1)
+                msg = self.create_msg(type=Types.recovery, payload=msg)
+                self.skt.sendto(pickle.dumps(msg), (member[1],member[2]))
+
+        # update own values
+        try:
+            data, addr = self.skt.recvfrom(2048)
+            msg:RECOVER_MESSAGE = pickle.loads(data)
+        except TimeoutError:
+            # failure of a machine.
+            Member.STATE = STATES.join
+            self.send_join()
+            self.initiate_join_state()
+        Member.seq_to_reqid.update(msg.seq_to_req)
+        Member.request_hist = msg.requests
+
+        self.skt.timeout(None)
+        Member.STATE=STATES.operational
 
 
     def send_join(self, p, f): 
@@ -193,7 +262,7 @@ class Member:
 
     
     def send_request_msg(self, request: Request):
-        if Member.STATE == STATES.join:
+        if Member.STATE != STATES.operational:
             return -1
         Member.lsn+=1
         lsn = Member.lsn
@@ -468,30 +537,6 @@ class Member:
                         Member.request_hist[Member.pid][1]+=[msg]
                         self.broadcast(msg)
     
-    def initiate_commit_state(self, msg):
-        if self.pid == min([m.pid for m in self.members]):  # Lowest ID starts the commit
-            arus = [self.aru[m.pid] for m in self.members]
-            delivered_msgs = {m.pid: self.message_history[m.pid] for m in self.members}
-            commit_msg = CommitMessage(self.members, arus, delivered_msgs)
-            commit_msg = self.create_msg(Types.commit, commit_msg)
-            self.broadcast(commit_msg)
-
-    def handleCommitMsg(self, msg):
-         if self.commit_round == 0:
-            self.update_state(msg)
-            self.commit_round = 1
-            msg = self.create_msg(Types.commit_token, msg)
-            self.broadcast(msg)
-        elif self.commit_round == 1:
-            # Start recovery phase after the second round
-            self.recovery_state()
-            self.commit_round = 0 
-    
-    def update_state(self, msg):
-        self.members = msg.members
-        for mem in msg.members:
-            self.aru[mem.pid] = msg.arus[mem.pid]
-            self.message_history[mem.pid] = msg.delivered_msgs[mem.pid]
 
                         
 
